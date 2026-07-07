@@ -1,44 +1,46 @@
 import Link from 'next/link'
 import {
-  Home as HomeIcon, Truck, Warehouse, Building2, ShieldCheck, Clock, MapPin, Star,
-  ArrowRight, PhoneCall, PackageCheck, ClipboardList, Sparkles, Boxes,
+  Home as HomeIcon, Truck, Warehouse, Building2, ShieldCheck, Clock, MapPin, Star, Users,
+  ArrowRight, PhoneCall, PackageCheck, ClipboardList, Calculator, Lock, Package, Boxes,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 
-const STATS = [
-  { value: '12,000+', label: 'Moves & shipments completed' },
-  { value: '9', label: 'Provinces covered' },
-  { value: '4.9/5', label: 'Average customer rating' },
-  { value: '24/7', label: 'Dispatch & support' },
+const TRUST_ITEMS = [
+  { Icon: ShieldCheck, title: 'Insured', desc: 'Your move is fully covered.' },
+  { Icon: Users, title: 'Vetted Movers', desc: 'Experienced, reliable moving professionals.' },
+  { Icon: MapPin, title: 'Live Tracking', desc: 'Track your move in real time.' },
+  { Icon: Lock, title: 'Fixed Pricing', desc: 'No hidden fees. What we quote is what you pay.' },
 ]
 
 const SERVICES = [
   {
     icon: HomeIcon,
-    title: 'Home Moving',
-    desc: 'Full-service residential moves — packing, loading, transport & unpacking, done with white-glove care.',
+    title: 'Home Moves',
+    desc: 'Moving your home with care.',
     href: '/home-moving',
-    featured: true,
+    gradient: 'from-orange-100 to-orange-500/40',
   },
   {
     icon: Building2,
-    title: 'Office Relocation',
-    desc: 'Minimal downtime moves for businesses, with weekend & after-hours scheduling.',
+    title: 'Office Relocations',
+    desc: "Minimise downtime. We'll handle it all.",
     href: '/services#office',
+    gradient: 'from-gray-200 to-navy-700/40',
   },
   {
-    icon: Truck,
-    title: 'Freight (LTL / FTL)',
-    desc: 'Less-than-truckload and full-truckload freight across the country, tracked door to door.',
-    href: '/services#freight',
+    icon: Package,
+    title: 'Packing Services',
+    desc: 'Professional packing for total protection.',
+    href: '/home-moving',
+    gradient: 'from-orange-100 to-navy-800/30',
   },
   {
     icon: Warehouse,
-    title: 'Warehousing & Storage',
-    desc: 'Short and long-term storage with secure, climate-aware facilities.',
+    title: 'Storage Solutions',
+    desc: 'Safe, secure, and flexible storage.',
     href: '/services#warehousing',
+    gradient: 'from-gray-200 to-orange-500/30',
   },
 ]
 
@@ -59,45 +61,66 @@ export default function HomePage() {
   return (
     <div className="bg-white">
       {/* Hero */}
-      <section className="relative bg-navy-900 overflow-hidden">
-        <div className="absolute inset-0 opacity-20 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle at 20% 20%, #f5711b 0, transparent 40%), radial-gradient(circle at 80% 60%, #1a3563 0, transparent 45%)'
-        }} />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-20 sm:pt-24 sm:pb-28 relative">
-          <div className="max-w-2xl fade-up">
-            <Badge variant="outline" className="mb-5">
-              <Sparkles className="w-3.5 h-3.5 mr-1.5" /> Now booking home moves nationwide
-            </Badge>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.08] mb-6">
-              We move your <span className="text-orange-500">home</span>, your business, and everything between.
+      <section className="relative bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-14 pb-24 sm:pt-20 relative grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <div className="fade-up relative z-10">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-navy-900 leading-[1.05] mb-6">
+              Moving made <span className="text-orange-500">simple.</span>
             </h1>
-            <p className="text-white/70 text-base sm:text-lg leading-relaxed mb-8 max-w-xl">
-              Extrofreight is a full-service logistics company built on freight — now bringing that same
-              reliability to home moving. Fixed quotes, trained crews, and real-time tracking from the
-              first box to the last mile.
+            <p className="text-gray-500 text-base sm:text-lg leading-relaxed mb-8 max-w-md">
+              Professional home and office moving services you can trust. Book in minutes and
+              we&apos;ll take care of the rest.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/quote">
-                <Button size="lg" className="w-full sm:w-auto">
-                  Get a Free Moving Quote <ArrowRight className="w-4 h-4 ml-2" />
+                <Button size="lg" className="w-full sm:w-auto bg-navy-900 hover:bg-navy-800 text-white">
+                  Get a Quote <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
-              <Link href="/services">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                  Explore Freight & Logistics
+              <Link href="/pricing">
+                <Button size="lg" variant="secondary" className="w-full sm:w-auto border border-orange-300 text-orange-600 bg-white hover:bg-orange-50">
+                  <Calculator className="w-4 h-4 mr-2" /> Calculate Cost
                 </Button>
               </Link>
             </div>
           </div>
+
+          {/* Hero visual */}
+          <div className="relative">
+            <div className="relative rounded-3xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-navy-900 via-navy-800 to-orange-500/30">
+              <div className="absolute inset-0 opacity-25" style={{
+                backgroundImage: 'radial-gradient(circle at 25% 20%, #c9962f 0, transparent 45%), radial-gradient(circle at 80% 75%, #ffffff 0, transparent 35%)'
+              }} />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Truck className="w-40 h-40 sm:w-52 sm:h-52 text-white/90" strokeWidth={1} />
+              </div>
+            </div>
+            <Card className="absolute -bottom-6 -left-4 sm:-left-8 px-5 py-4 flex items-center gap-3 shadow-lg">
+              <div className="flex -space-x-1">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <span key={i} className="w-4 h-4 fill-orange-500 text-orange-500 inline-flex">
+                    <Star className="w-4 h-4 fill-orange-500 text-orange-500" />
+                  </span>
+                ))}
+              </div>
+              <div>
+                <p className="text-sm font-bold text-navy-900">4.9/5 rating</p>
+                <p className="text-xs text-gray-500">12,000+ happy movers</p>
+              </div>
+            </Card>
+          </div>
         </div>
 
-        {/* Stats bar */}
-        <div className="relative border-t border-white/10 bg-navy-950/60">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-2 sm:grid-cols-4 gap-6">
-            {STATS.map(s => (
-              <div key={s.label} className="text-center sm:text-left">
-                <p className="text-2xl sm:text-3xl font-extrabold text-white">{s.value}</p>
-                <p className="text-xs sm:text-sm text-white/60 mt-1">{s.label}</p>
+        {/* Trust bar */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 -mt-4 sm:-mt-8 relative z-10">
+          <div className="bg-navy-900 rounded-2xl px-6 sm:px-10 py-8 grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {TRUST_ITEMS.map(item => (
+              <div key={item.title} className="flex items-start gap-3">
+                <item.Icon className="w-6 h-6 text-orange-500 shrink-0 mt-0.5" strokeWidth={1.75} />
+                <div>
+                  <p className="text-sm font-bold text-white">{item.title}</p>
+                  <p className="text-xs text-white/60 mt-0.5 leading-relaxed">{item.desc}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -107,23 +130,23 @@ export default function HomePage() {
       {/* Services */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <p className="text-orange-600 text-xs font-bold uppercase tracking-widest mb-2">What we do</p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-navy-900">One company, every kind of move</h2>
-          <p className="text-gray-500 mt-3">From a single household to a nationwide supply chain — we've built the fleet and the crews to handle it.</p>
+          <p className="text-orange-600 text-xs font-bold uppercase tracking-widest mb-2">Our Services</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-navy-900">Moving solutions for every need.</h2>
+          <p className="text-gray-500 mt-3">From home moves to office relocations, we make every move seamless.</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {SERVICES.map(s => (
             <Link href={s.href} key={s.title}>
-              <Card className={`h-full p-6 hover:shadow-lg transition-shadow duration-200 ${s.featured ? 'border-orange-300 ring-1 ring-orange-200 bg-orange-50/30' : ''}`}>
-                {s.featured && <Badge className="mb-3">Flagship service</Badge>}
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${s.featured ? 'bg-orange-500 text-white' : 'bg-navy-900 text-white'}`}>
-                  <s.icon className="w-6 h-6" strokeWidth={1.75} />
+              <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow duration-200 p-0">
+                <div className={`relative h-36 bg-gradient-to-br ${s.gradient}`}>
+                  <div className="absolute -bottom-5 left-5 w-11 h-11 rounded-xl bg-navy-900 text-white flex items-center justify-center shadow-md">
+                    <s.icon className="w-5 h-5" strokeWidth={1.75} />
+                  </div>
                 </div>
-                <h3 className="font-bold text-navy-900 mb-2">{s.title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed mb-4">{s.desc}</p>
-                <span className="text-sm font-semibold text-orange-600 inline-flex items-center gap-1">
-                  Learn more <ArrowRight className="w-3.5 h-3.5" />
-                </span>
+                <div className="p-5 pt-8">
+                  <h3 className="font-bold text-navy-900 mb-1.5">{s.title}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed">{s.desc}</p>
+                </div>
               </Card>
             </Link>
           ))}
