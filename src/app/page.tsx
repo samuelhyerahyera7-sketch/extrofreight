@@ -19,21 +19,21 @@ const SERVICES = [
     title: 'Home Moves',
     desc: 'Moving your home with care.',
     href: '/home-moving',
-    gradient: 'from-orange-100 to-orange-500/40',
+    image: '/images/home-moves.jpg',
   },
   {
     icon: Building2,
     title: 'Office Relocations',
     desc: "Minimise downtime. We'll handle it all.",
     href: '/services#office',
-    gradient: 'from-gray-200 to-navy-700/40',
+    image: '/images/office-relocations.jpg',
   },
   {
     icon: Package,
     title: 'Packing Services',
     desc: 'Professional packing for total protection.',
     href: '/home-moving',
-    gradient: 'from-orange-100 to-navy-800/30',
+    image: '/images/packing-services.jpg',
   },
   {
     icon: Warehouse,
@@ -61,13 +61,23 @@ export default function HomePage() {
   return (
     <div className="bg-white">
       {/* Hero */}
-      <section className="relative bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-14 pb-24 sm:pt-20 relative grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          <div className="fade-up relative z-10">
+      <section className="relative bg-white overflow-hidden min-h-[560px] sm:min-h-[640px] flex items-center">
+        <div className="absolute inset-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/hero-moving.jpg"
+            alt="Extrofreight movers loading a truck outside a family home"
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 sm:via-white/75 to-white/10" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 relative w-full">
+          <div className="fade-up relative z-10 max-w-lg">
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-navy-900 leading-[1.05] mb-6">
               Moving made <span className="text-orange-500">simple.</span>
             </h1>
-            <p className="text-gray-500 text-base sm:text-lg leading-relaxed mb-8 max-w-md">
+            <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-8 max-w-md">
               Professional home and office moving services you can trust. Book in minutes and
               we&apos;ll take care of the rest.
             </p>
@@ -84,35 +94,10 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-
-          {/* Hero visual */}
-          <div className="relative">
-            <div className="relative rounded-3xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-navy-900 via-navy-800 to-orange-500/30">
-              <div className="absolute inset-0 opacity-25" style={{
-                backgroundImage: 'radial-gradient(circle at 25% 20%, #c9962f 0, transparent 45%), radial-gradient(circle at 80% 75%, #ffffff 0, transparent 35%)'
-              }} />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Truck className="w-40 h-40 sm:w-52 sm:h-52 text-white/90" strokeWidth={1} />
-              </div>
-            </div>
-            <Card className="absolute -bottom-6 -left-4 sm:-left-8 px-5 py-4 flex items-center gap-3 shadow-lg">
-              <div className="flex -space-x-1">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <span key={i} className="w-4 h-4 fill-orange-500 text-orange-500 inline-flex">
-                    <Star className="w-4 h-4 fill-orange-500 text-orange-500" />
-                  </span>
-                ))}
-              </div>
-              <div>
-                <p className="text-sm font-bold text-navy-900">4.9/5 rating</p>
-                <p className="text-xs text-gray-500">12,000+ happy movers</p>
-              </div>
-            </Card>
-          </div>
         </div>
 
         {/* Trust bar */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 -mt-4 sm:-mt-8 relative z-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 absolute left-0 right-0 bottom-0 translate-y-1/2 z-10">
           <div className="bg-navy-900 rounded-2xl px-6 sm:px-10 py-8 grid grid-cols-2 lg:grid-cols-4 gap-8">
             {TRUST_ITEMS.map(item => (
               <div key={item.title} className="flex items-start gap-3">
@@ -126,6 +111,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      {/* spacer to account for the trust bar overlapping below the hero */}
+      <div className="h-[92px] sm:h-[68px]" />
 
       {/* Services */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
@@ -138,7 +125,11 @@ export default function HomePage() {
           {SERVICES.map(s => (
             <Link href={s.href} key={s.title}>
               <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow duration-200 p-0">
-                <div className={`relative h-36 bg-gradient-to-br ${s.gradient}`}>
+                <div className={`relative h-36 ${s.gradient ? `bg-gradient-to-br ${s.gradient}` : ''}`}>
+                  {s.image && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={s.image} alt={s.title} className="absolute inset-0 w-full h-full object-cover" />
+                  )}
                   <div className="absolute -bottom-5 left-5 w-11 h-11 rounded-xl bg-navy-900 text-white flex items-center justify-center shadow-md">
                     <s.icon className="w-5 h-5" strokeWidth={1.75} />
                   </div>

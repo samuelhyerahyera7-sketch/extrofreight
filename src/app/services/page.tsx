@@ -40,10 +40,14 @@ export default function ServicesPage() {
             ))}
           </ul>
         </div>
-        <Card className="p-8 bg-gray-50">
-          <Globe2 className="w-10 h-10 text-orange-500 mb-4" />
-          <p className="text-2xl font-extrabold text-navy-900 mb-1">Nationwide coverage</p>
-          <p className="text-sm text-gray-500">9 provinces, daily departures from our main depots.</p>
+        <Card className="overflow-hidden p-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/nationwide-service.jpg" alt="Extrofreight truck on a national highway" className="w-full h-56 object-cover" />
+          <div className="p-6">
+            <Globe2 className="w-8 h-8 text-orange-500 mb-3" />
+            <p className="text-2xl font-extrabold text-navy-900 mb-1">Nationwide coverage</p>
+            <p className="text-sm text-gray-500">9 provinces, daily departures from our main depots.</p>
+          </div>
         </Card>
       </section>
 
