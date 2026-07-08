@@ -69,7 +69,13 @@ export default function HomePage() {
             alt="Extrofreight movers loading a truck outside a family home"
             className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 sm:via-white/75 to-white/10" />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                'linear-gradient(to right, #ffffff 0%, #ffffff 22%, rgba(255,255,255,0.85) 34%, rgba(255,255,255,0.35) 48%, rgba(255,255,255,0) 62%)',
+            }}
+          />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 relative w-full">

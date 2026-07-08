@@ -3,16 +3,23 @@ import { cn } from '@/lib/utils'
 export default function Logo({ light = false, className }: { light?: boolean; className?: string }) {
   const ink = light ? '#ffffff' : '#0a0a0a'
   return (
-    <span className={cn('inline-flex items-center gap-3', className)}>
-      <svg width="38" height="38" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="20" cy="20" r="18.5" stroke={ink} strokeWidth="1.5" />
-        <path d="M15 11v18M15 11h7.5a4 4 0 1 1 0 8H15M15 19h6.5a3.5 3.5 0 1 1 0 7" stroke={ink} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <span className={cn('inline-flex items-center gap-2.5', className)}>
+      <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="50" cy="50" rx="33" ry="41" stroke={ink} strokeWidth="3" />
+        {/* base E: spine + top/mid/bottom bars */}
+        <rect x="39" y="15" width="9" height="70" fill={ink} />
+        <rect x="39" y="15" width="27" height="9" fill={ink} />
+        <rect x="39" y="45.5" width="20" height="9" fill={ink} />
+        <rect x="39" y="76" width="27" height="9" fill={ink} />
+        {/* offset upper stroke to suggest an interlocked F in front */}
+        <rect x="50" y="6" width="9" height="39" fill={ink} />
+        <rect x="50" y="6" width="24" height="9" fill={ink} />
       </svg>
       <span
-        className="font-bold text-lg tracking-[0.14em] uppercase"
+        className="font-bold text-lg tracking-[0.22em] uppercase"
         style={{ color: ink }}
       >
-        Extro<span className="font-normal">freight</span>
+        Extrofreight
       </span>
     </span>
   )

@@ -35,11 +35,11 @@ export default function Navbar() {
             <Logo />
           </Link>
 
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-9">
             <Link
               href="/"
               className={cn(
-                'text-sm font-medium pb-1 border-b-2 transition-colors',
+                'text-[15px] font-semibold pb-1 border-b-2 transition-colors',
                 pathname === '/' ? 'text-navy-900 border-orange-500' : 'text-navy-800 border-transparent hover:text-orange-600'
               )}
             >
@@ -51,7 +51,7 @@ export default function Navbar() {
               onMouseEnter={() => setServicesOpen(true)}
               onMouseLeave={() => setServicesOpen(false)}
             >
-              <button className="flex items-center gap-1 text-sm font-medium text-navy-800 hover:text-orange-600 transition-colors pb-1 border-b-2 border-transparent">
+              <button className="flex items-center gap-1 text-[15px] font-semibold text-navy-800 hover:text-orange-600 transition-colors pb-1 border-b-2 border-transparent">
                 Services <ChevronDown className="w-3.5 h-3.5" />
               </button>
               {servicesOpen && (
@@ -76,7 +76,7 @@ export default function Navbar() {
                 key={l.href}
                 href={l.href}
                 className={cn(
-                  'text-sm font-medium pb-1 border-b-2 transition-colors',
+                  'text-[15px] font-semibold pb-1 border-b-2 transition-colors',
                   pathname === l.href ? 'text-navy-900 border-orange-500' : 'text-navy-800 border-transparent hover:text-orange-600'
                 )}
               >
@@ -88,7 +88,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-3">
             <Link
               href="/quote"
-              className="inline-flex items-center gap-2 bg-navy-900 hover:bg-navy-800 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors"
+              className="inline-flex items-center gap-2 bg-navy-900 hover:bg-navy-800 text-white text-sm font-semibold px-6 py-3 rounded-full transition-colors"
             >
               Get a Quote <ArrowRight className="w-4 h-4" />
             </Link>
