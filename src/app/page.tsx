@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import {
-  Home as HomeIcon, Truck, Warehouse, Building2, ShieldCheck, Clock, MapPin, Star, Users,
+  Home as HomeIcon, Truck, Globe2, Building2, ShieldCheck, Clock, MapPin, Star, Users,
   ArrowRight, PhoneCall, PackageCheck, ClipboardList, Calculator, Lock, Package, Boxes,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -36,11 +36,11 @@ const SERVICES = [
     image: '/images/packing-services.jpg',
   },
   {
-    icon: Warehouse,
-    title: 'Storage Solutions',
-    desc: 'Safe, secure, and flexible storage.',
-    href: '/services#warehousing',
-    gradient: 'from-gray-200 to-orange-500/30',
+    icon: Globe2,
+    title: 'Nationwide Service',
+    desc: "Wherever you are in South Africa, we've got you covered.",
+    href: '/services#freight',
+    image: '/images/nationwide-service.jpg',
   },
 ]
 
@@ -61,22 +61,22 @@ export default function HomePage() {
   return (
     <div className="bg-white">
       {/* Hero */}
-      <section className="relative bg-white overflow-hidden min-h-[560px] sm:min-h-[640px] flex items-center">
-        <div className="absolute inset-0">
+      <section className="relative bg-white h-[460px] sm:h-[560px] lg:h-[640px] flex items-center">
+        <div className="absolute inset-0 flex justify-end overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/hero-moving.jpg"
             alt="Extrofreight movers loading a truck outside a family home"
-            className="w-full h-full object-cover object-center"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                'linear-gradient(to right, #ffffff 0%, #ffffff 22%, rgba(255,255,255,0.85) 34%, rgba(255,255,255,0.35) 48%, rgba(255,255,255,0) 62%)',
-            }}
+            className="h-full w-auto max-w-none"
           />
         </div>
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              'linear-gradient(to right, #ffffff 0%, #ffffff 22%, rgba(255,255,255,0.85) 34%, rgba(255,255,255,0.35) 48%, rgba(255,255,255,0) 62%)',
+          }}
+        />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 relative w-full">
           <div className="fade-up relative z-10 max-w-lg">
@@ -131,11 +131,9 @@ export default function HomePage() {
           {SERVICES.map(s => (
             <Link href={s.href} key={s.title}>
               <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow duration-200 p-0">
-                <div className={`relative h-36 ${s.gradient ? `bg-gradient-to-br ${s.gradient}` : ''}`}>
-                  {s.image && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={s.image} alt={s.title} className="absolute inset-0 w-full h-full object-cover" />
-                  )}
+                <div className="relative h-36">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={s.image} alt={s.title} className="absolute inset-0 w-full h-full object-cover" />
                   <div className="absolute -bottom-5 left-5 w-11 h-11 rounded-xl bg-navy-900 text-white flex items-center justify-center shadow-md">
                     <s.icon className="w-5 h-5" strokeWidth={1.75} />
                   </div>

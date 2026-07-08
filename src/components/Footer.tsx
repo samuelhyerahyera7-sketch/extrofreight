@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
           <div>
-            <Logo light className="mb-4" />
+            <Logo light size="sm" className="mb-4" />
             <p className="text-sm leading-relaxed max-w-xs">
               Extrofreight moves freight and families — reliable home moving and nationwide
               logistics, fully insured and on time, every time.
