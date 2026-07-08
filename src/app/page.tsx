@@ -131,7 +131,7 @@ export default function HomePage() {
           {SERVICES.map(s => (
             <Link href={s.href} key={s.title}>
               <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow duration-200 p-0">
-                <div className="relative h-36">
+                <div className="relative h-56">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={s.image} alt={s.title} className="absolute inset-0 w-full h-full object-cover" />
                   <div className="absolute -bottom-5 left-5 w-11 h-11 rounded-xl bg-navy-900 text-white flex items-center justify-center shadow-md">

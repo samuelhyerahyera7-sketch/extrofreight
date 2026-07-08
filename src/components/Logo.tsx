@@ -11,9 +11,9 @@ export default function Logo({
 }) {
   const suffix = light ? '-white' : ''
   const iconSize = size === 'sm' ? 'h-7 w-7' : 'h-9 w-9'
-  const wordSize = size === 'sm' ? 'h-3' : 'h-4 sm:h-[18px]'
+  const wordSize = size === 'sm' ? 'h-2' : 'h-2.5 sm:h-3'
   return (
-    <span className={cn('inline-flex items-center gap-3', className)}>
+    <span className={cn('inline-flex items-center gap-2', className)}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={`/images/logo-icon${suffix}.png`} alt="" className={cn(iconSize, 'shrink-0')} />
       {/* eslint-disable-next-line @next/next/no-img-element */}
