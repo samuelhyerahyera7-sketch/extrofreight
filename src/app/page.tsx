@@ -61,8 +61,52 @@ const TESTIMONIALS = [
 export default function HomePage() {
   return (
     <div className="bg-white">
-      {/* Hero */}
-      <section className="relative bg-white h-[460px] sm:h-[560px] lg:h-[640px] flex items-center">
+      {/* Hero — mobile: simple stacked layout */}
+      <section className="sm:hidden bg-white">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/hero-moving.jpg"
+          alt="Extrofreight movers loading a truck outside a family home"
+          className="w-full h-60 object-cover"
+        />
+        <div className="px-4 pt-8 pb-2">
+          <h1 className="text-4xl font-extrabold text-navy-900 leading-[1.05] mb-4">
+            Moving made <span className="text-orange-500">simple.</span>
+          </h1>
+          <p className="text-gray-600 text-base leading-relaxed mb-6">
+            Professional home and office moving services you can trust. Book in minutes and
+            we&apos;ll take care of the rest.
+          </p>
+          <div className="flex flex-col gap-3">
+            <Link href="/quote">
+              <Button size="lg" className="w-full bg-navy-900 hover:bg-navy-800 text-white">
+                Get a Quote <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+            <Link href="/pricing">
+              <Button size="lg" variant="secondary" className="w-full border border-orange-300 text-orange-600 bg-white hover:bg-orange-50">
+                <FileText className="w-4 h-4 mr-2" /> How Pricing Works
+              </Button>
+            </Link>
+          </div>
+        </div>
+        <div className="px-4 pb-8 pt-4">
+          <div className="bg-navy-900 rounded-2xl px-5 py-6 grid grid-cols-2 gap-6">
+            {TRUST_ITEMS.map(item => (
+              <div key={item.title} className="flex items-start gap-2.5">
+                <item.Icon className="w-5 h-5 text-orange-500 shrink-0 mt-0.5" strokeWidth={1.75} />
+                <div>
+                  <p className="text-xs font-bold text-white">{item.title}</p>
+                  <p className="text-[11px] text-white/60 mt-0.5 leading-snug">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Hero — sm and up: photo bleeds behind text with a mask fade */}
+      <section className="hidden sm:flex relative bg-white h-[560px] lg:h-[640px] items-center">
         <div className="absolute inset-0 flex justify-end overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -78,23 +122,23 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 relative w-full">
+        <div className="max-w-7xl mx-auto px-6 py-20 relative w-full">
           <div className="fade-up relative z-10 max-w-lg">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-navy-900 leading-[1.05] mb-6">
+            <h1 className="text-6xl lg:text-7xl font-extrabold text-navy-900 leading-[1.05] mb-6">
               Moving made <span className="text-orange-500">simple.</span>
             </h1>
-            <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-8 max-w-md">
+            <p className="text-gray-600 text-lg leading-relaxed mb-8 max-w-md">
               Professional home and office moving services you can trust. Book in minutes and
               we&apos;ll take care of the rest.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-row gap-3">
               <Link href="/quote">
-                <Button size="lg" className="w-full sm:w-auto bg-navy-900 hover:bg-navy-800 text-white">
+                <Button size="lg" className="bg-navy-900 hover:bg-navy-800 text-white">
                   Get a Quote <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
               <Link href="/pricing">
-                <Button size="lg" variant="secondary" className="w-full sm:w-auto border border-orange-300 text-orange-600 bg-white hover:bg-orange-50">
+                <Button size="lg" variant="secondary" className="border border-orange-300 text-orange-600 bg-white hover:bg-orange-50">
                   <FileText className="w-4 h-4 mr-2" /> How Pricing Works
                 </Button>
               </Link>
@@ -103,8 +147,8 @@ export default function HomePage() {
         </div>
 
         {/* Trust bar */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 absolute left-0 right-0 bottom-0 translate-y-1/2 z-10">
-          <div className="bg-navy-900 rounded-2xl px-6 sm:px-10 py-8 grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="max-w-6xl mx-auto px-6 absolute left-0 right-0 bottom-0 translate-y-1/2 z-10">
+          <div className="bg-navy-900 rounded-2xl px-10 py-8 grid grid-cols-2 lg:grid-cols-4 gap-8">
             {TRUST_ITEMS.map(item => (
               <div key={item.title} className="flex items-start gap-3">
                 <item.Icon className="w-6 h-6 text-orange-500 shrink-0 mt-0.5" strokeWidth={1.75} />
@@ -117,8 +161,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      {/* spacer to account for the trust bar overlapping below the hero */}
-      <div className="h-[92px] sm:h-[68px]" />
+      {/* spacer to account for the trust bar overlapping below the hero (sm+ only) */}
+      <div className="hidden sm:block h-[68px]" />
 
       {/* Services */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
