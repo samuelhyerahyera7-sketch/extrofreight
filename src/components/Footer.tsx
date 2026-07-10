@@ -53,7 +53,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs">
-          <p>© {new Date().getFullYear()} Extrofreight. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Extrofreight. Established in 2022. All rights reserved.</p>
           <p>Licensed & insured freight carrier</p>
         </div>
       </div>

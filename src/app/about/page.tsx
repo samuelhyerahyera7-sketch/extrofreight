@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Target, Eye, Users, Award, ArrowRight } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 
 export const metadata: Metadata = {
   title: 'About Us | Extrofreight',
@@ -21,12 +22,13 @@ export default function AboutPage() {
     <div className="bg-white">
       <section className="bg-navy-900 py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <Badge className="mb-5">Established in 2022</Badge>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-5">Built on freight. Trusted with your home.</h1>
           <p className="text-white/70 leading-relaxed">
-            Extrofreight began as a regional freight carrier moving goods for businesses across the
-            country. Today, we bring that same logistics discipline — route planning, tracking,
-            trained crews — to home moving, making it our flagship service alongside our freight and
-            warehousing operations.
+            Extrofreight was founded in 2022 as a regional freight carrier moving goods for businesses
+            across the country. Since then, we've brought that same logistics discipline — route
+            planning, tracking, trained crews — to home moving, making it our flagship service
+            alongside our freight and warehousing operations.
           </p>
         </div>
       </section>
