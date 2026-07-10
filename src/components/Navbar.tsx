@@ -31,8 +31,15 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-20">
-          <Link href="/">
-            <Logo />
+          <Link href="/" className="shrink-0">
+            {/* Icon only on the narrowest screens so it never collides with the mobile CTA */}
+            <span className="sm:hidden inline-flex">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/logo-icon.png" alt="Extrofreight" className="h-8 w-8" />
+            </span>
+            <span className="hidden sm:inline-flex">
+              <Logo />
+            </span>
           </Link>
 
           <div className="hidden lg:flex items-center gap-9">
@@ -94,11 +101,11 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <div className="flex lg:hidden items-center gap-3">
-            <Link href="/quote" className="bg-navy-900 hover:bg-navy-800 text-white text-xs font-semibold px-4 py-2 rounded-full">
+          <div className="flex lg:hidden items-center gap-2 sm:gap-3 shrink-0">
+            <Link href="/quote" className="whitespace-nowrap bg-navy-900 hover:bg-navy-800 text-white text-xs font-semibold px-3 sm:px-4 py-2 rounded-full">
               Get a Quote
             </Link>
-            <button onClick={() => setMenuOpen(!menuOpen)} className="p-1 text-navy-800" aria-label="Menu">
+            <button onClick={() => setMenuOpen(!menuOpen)} className="p-1 text-navy-800 shrink-0" aria-label="Menu">
               {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
