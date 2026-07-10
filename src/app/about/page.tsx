@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const VALUES = [
   { Icon: Target, title: 'Reliability first', desc: 'On-time performance is our core metric, not an afterthought.' },
-  { Icon: Eye, title: 'Full transparency', desc: 'Fixed quotes and clear tracking — you always know where your goods are.' },
+  { Icon: Eye, title: 'Full transparency', desc: 'Written quotes and clear tracking — you always know where your goods are.' },
   { Icon: Users, title: 'Trained crews', desc: 'Every driver and mover is vetted, trained and insured.' },
   { Icon: Award, title: 'Continuous improvement', desc: 'We invest in fleet, technology and training every year.' },
 ]
@@ -67,7 +67,7 @@ export default function AboutPage() {
 
       <section className="max-w-4xl mx-auto px-4 sm:px-6 py-20 text-center">
         <h2 className="text-3xl font-extrabold text-navy-900 mb-4">Want to work with us?</h2>
-        <p className="text-gray-500 mb-8">Get a fixed quote for your move or shipment today.</p>
+        <p className="text-gray-500 mb-8">Get a written quote for your move or shipment today.</p>
         <Link href="/quote"><Button size="lg">Get a Free Quote <ArrowRight className="w-4 h-4 ml-2" /></Button></Link>
       </section>
     </div>

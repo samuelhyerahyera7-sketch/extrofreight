@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 const STEPS = [
-  { Icon: PhoneCall, title: 'Free survey & quote', desc: 'Tell us about your move or shipment — in person, on video, or online — and get a transparent, fixed quote within one business day.' },
+  { Icon: PhoneCall, title: 'Free survey & quote', desc: 'Tell us about your move or shipment — in person, on video, or online — and get a transparent, written quote within one business day.' },
   { Icon: ClipboardList, title: 'Plan & pack', desc: 'We schedule your date and, for home moves, pack your belongings with the right materials for every item.' },
   { Icon: Truck, title: 'Move / transit day', desc: 'Our trained crews load, transport and deliver on time, with live tracking and updates along the way.' },
   { Icon: PackageCheck, title: 'Unpack & settle', desc: 'For moves, we unpack, assemble furniture, and clear away the boxes. For freight, we confirm proof of delivery.' },
@@ -43,7 +43,7 @@ export default function HowItWorksPage() {
 
       <section className="max-w-3xl mx-auto px-4 sm:px-6 py-20 text-center">
         <h2 className="text-3xl font-extrabold text-navy-900 mb-4">Ready to get started?</h2>
-        <p className="text-gray-500 mb-8">Get a fixed quote in minutes — no obligation, no hidden fees.</p>
+        <p className="text-gray-500 mb-8">Get a written quote in minutes — no obligation, no hidden fees.</p>
         <Link href="/quote"><Button size="lg">Get a Free Quote <ArrowRight className="w-4 h-4 ml-2" /></Button></Link>
       </section>
     </div>

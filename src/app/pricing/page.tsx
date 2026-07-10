@@ -1,40 +1,47 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { Check, ArrowRight, PhoneCall } from 'lucide-react'
+import {
+  ArrowRight, PhoneCall, ClipboardList, Video, Truck, FileText,
+  Ruler, MapPin, Calendar, Boxes, ShieldCheck,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 
 export const metadata: Metadata = {
-  title: 'Pricing | Extrofreight',
-  description: 'Fixed, transparent pricing for home moving, office relocation, freight and warehousing.',
+  title: 'Get a Quote | Extrofreight',
+  description: 'No fixed price lists — every move or shipment is quoted individually based on your needs. See the ways you can get a free Extrofreight quote.',
 }
 
-const MOVING_PLANS = [
+const QUOTE_WAYS = [
   {
-    name: 'Essential',
-    price: 'From R2,499',
-    desc: 'For small apartments & studios moving locally.',
-    features: ['Truck & 2-person crew', 'Loading & unloading', 'Basic furniture blankets', 'Local moves up to 20km'],
+    Icon: ClipboardList,
+    title: 'Online quote form',
+    desc: 'Answer a few quick questions about your move and get a written quote back within one business day.',
   },
   {
-    name: 'Complete',
-    price: 'From R5,999',
-    desc: 'Our most popular plan for full households.',
-    features: ['Truck & 4-person crew', 'Full packing service', 'Furniture disassembly/reassembly', 'Move insurance included', 'Local & regional moves'],
-    featured: true,
+    Icon: Video,
+    title: 'Free home survey',
+    desc: 'Book an in-person or video walkthrough with a move coordinator for an accurate, no-obligation quote on bigger moves.',
   },
   {
-    name: 'Premium',
-    price: 'Custom quote',
-    desc: 'For large homes, long-distance or high-value moves.',
-    features: ['Dedicated move coordinator', 'Full-service packing & unpacking', 'Climate-aware storage option', 'White-glove handling for fragiles/antiques', 'Nationwide long-distance coverage'],
+    Icon: Truck,
+    title: 'Depot-to-depot',
+    desc: 'Pack it yourself and drop it at our depot, or let us collect — a lower-cost option for flexible moving dates.',
+  },
+  {
+    Icon: PhoneCall,
+    title: 'Call for an estimate',
+    desc: 'Speak to a coordinator directly for a fast ballpark estimate on freight, office moves or home relocations.',
   },
 ]
 
-const OTHER_PRICING = [
-  { name: 'Office Relocation', price: 'Custom quote', desc: 'Priced per project based on floor size, equipment and timeline.' },
-  { name: 'Freight (LTL / FTL)', price: 'Per lane', desc: 'Quoted per shipment based on weight, volume and route.' },
-  { name: 'Warehousing & Storage', price: 'From R450/month', desc: 'Per pallet or per cubic metre, month-to-month or contract.' },
+const FACTORS = [
+  { Icon: Boxes, title: 'Size of your move', desc: 'Number of rooms or volume of freight to be moved.' },
+  { Icon: MapPin, title: 'Distance', desc: 'Local, regional or long-distance routes affect transport cost.' },
+  { Icon: Ruler, title: 'Access', desc: 'Stairs, lifts, parking and distance from truck to door.' },
+  { Icon: Calendar, title: 'Moving date', desc: 'Weekday, weekend and month-end availability can affect scheduling.' },
+  { Icon: ShieldCheck, title: 'Insurance level', desc: 'Standard carrier cover or comprehensive move insurance.' },
+  { Icon: FileText, title: 'Extra services', desc: 'Packing, storage, or specialist handling for fragile items.' },
 ]
 
 export default function PricingPage() {
@@ -42,39 +49,27 @@ export default function PricingPage() {
     <div className="bg-white">
       <section className="bg-navy-900 py-16 text-center">
         <div className="max-w-2xl mx-auto px-4 sm:px-6">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4">Simple, fixed pricing</h1>
-          <p className="text-white/70">No hidden fees. Every quote is confirmed in writing before the job starts.</p>
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4">Every move is quoted individually</h1>
+          <p className="text-white/70">
+            We don't publish a fixed price list — no two moves are the same. Tell us what you need and
+            we'll send a written, no-obligation quote.
+          </p>
         </div>
       </section>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
-        <h2 className="text-2xl font-extrabold text-navy-900 text-center mb-12">Home Moving Plans</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {MOVING_PLANS.map(plan => (
-            <Card
-              key={plan.name}
-              className={`p-8 flex flex-col ${plan.featured ? 'border-orange-400 ring-2 ring-orange-200 shadow-lg relative' : ''}`}
-            >
-              {plan.featured && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                  Most popular
-                </span>
-              )}
-              <h3 className="font-bold text-navy-900 text-xl mb-1">{plan.name}</h3>
-              <p className="text-sm text-gray-500 mb-4">{plan.desc}</p>
-              <p className="text-3xl font-extrabold text-navy-900 mb-6">{plan.price}</p>
-              <ul className="space-y-3 mb-8 flex-1">
-                {plan.features.map(f => (
-                  <li key={f} className="flex items-start gap-2.5 text-sm text-gray-700">
-                    <Check className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" /> {f}
-                  </li>
-                ))}
-              </ul>
-              <Link href="/quote">
-                <Button className="w-full" variant={plan.featured ? 'default' : 'secondary'}>
-                  Choose {plan.name}
-                </Button>
-              </Link>
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <p className="text-orange-600 text-xs font-bold uppercase tracking-widest mb-2">Ways to get a quote</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-navy-900">Pick whichever's easiest for you</h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {QUOTE_WAYS.map(w => (
+            <Card key={w.title} className="p-6">
+              <div className="w-12 h-12 rounded-xl bg-navy-900 text-white flex items-center justify-center mb-4">
+                <w.Icon className="w-6 h-6" strokeWidth={1.75} />
+              </div>
+              <h3 className="font-bold text-navy-900 mb-2">{w.title}</h3>
+              <p className="text-sm text-gray-500 leading-relaxed">{w.desc}</p>
             </Card>
           ))}
         </div>
@@ -82,22 +77,30 @@ export default function PricingPage() {
 
       <section className="bg-gray-50 py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <h2 className="text-2xl font-extrabold text-navy-900 text-center mb-12">Freight & Business Services</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {OTHER_PRICING.map(item => (
-              <Card key={item.name} className="p-6">
-                <h3 className="font-bold text-navy-900 mb-1">{item.name}</h3>
-                <p className="text-xl font-extrabold text-orange-600 mb-3">{item.price}</p>
-                <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
-              </Card>
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <p className="text-orange-600 text-xs font-bold uppercase tracking-widest mb-2">What affects your quote</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-navy-900">No two moves cost the same</h2>
+            <p className="text-gray-500 mt-3">These are the main things a coordinator will ask about when quoting your move.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {FACTORS.map(f => (
+              <div key={f.title} className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-navy-900 text-white flex items-center justify-center shrink-0">
+                  <f.Icon className="w-5 h-5" strokeWidth={1.75} />
+                </div>
+                <div>
+                  <h3 className="font-bold text-navy-900 mb-1">{f.title}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed">{f.desc}</p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       <section className="max-w-3xl mx-auto px-4 sm:px-6 py-20 text-center">
-        <h2 className="text-3xl font-extrabold text-navy-900 mb-4">Not sure which plan you need?</h2>
-        <p className="text-gray-500 mb-8">Tell us about your move or shipment and we'll recommend the right option.</p>
+        <h2 className="text-3xl font-extrabold text-navy-900 mb-4">Ready for your quote?</h2>
+        <p className="text-gray-500 mb-8">No obligation, no hidden fees — just an honest, written quote.</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link href="/quote"><Button size="lg">Get a Free Quote <ArrowRight className="w-4 h-4 ml-2" /></Button></Link>
           <a href="tel:+27110000000"><Button size="lg" variant="secondary"><PhoneCall className="w-4 h-4 mr-2" /> Call +27 11 000 0000</Button></a>

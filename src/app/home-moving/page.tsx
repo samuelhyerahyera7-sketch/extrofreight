@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge'
 
 export const metadata: Metadata = {
   title: 'Home Moving Services | Extrofreight',
-  description: 'Full-service home moving — local & long-distance, packing, storage and office relocation. Fixed quotes, insured crews, on-time delivery.',
+  description: 'Full-service home moving — local & long-distance, packing, storage and office relocation. Written quotes, insured crews, on-time delivery.',
 }
 
 const MOVE_TYPES = [
@@ -23,27 +23,24 @@ const MOVE_TYPES = [
 const PLANS = [
   {
     name: 'Essential',
-    price: 'From R2,499',
     desc: 'For small apartments & studios moving locally.',
     features: ['Truck & 2-person crew', 'Loading & unloading', 'Basic furniture blankets', 'Local moves up to 20km'],
   },
   {
     name: 'Complete',
-    price: 'From R5,999',
-    desc: 'Our most popular plan for full households.',
+    desc: 'Our most popular option for full households.',
     features: ['Truck & 4-person crew', 'Full packing service', 'Furniture disassembly/reassembly', 'Move insurance included', 'Local & regional moves'],
     featured: true,
   },
   {
     name: 'Premium',
-    price: 'Custom quote',
     desc: 'For large homes, long-distance or high-value moves.',
     features: ['Dedicated move coordinator', 'Full-service packing & unpacking', 'Climate-aware storage option', 'White-glove handling for fragiles/antiques', 'Nationwide long-distance coverage'],
   },
 ]
 
 const CHECKLIST = [
-  '6-8 weeks before: Book your move date and get your fixed quote',
+  '6-8 weeks before: Book your move date and get your written quote',
   '3-4 weeks before: Declutter, start using up food, and notify service providers',
   '1-2 weeks before: We deliver packing materials and confirm your move-day timeline',
   'Move day: Our crew arrives on time, protects your home, and loads with care',
@@ -100,13 +97,13 @@ export default function HomeMovingPage() {
         </div>
       </section>
 
-      {/* Pricing */}
+      {/* Service tiers */}
       <section className="bg-gray-50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <p className="text-orange-600 text-xs font-bold uppercase tracking-widest mb-2">Simple pricing</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-navy-900">Pick the plan that fits your move</h2>
-            <p className="text-gray-500 mt-3">Every quote is fixed in writing before move day — no hidden fees.</p>
+            <p className="text-orange-600 text-xs font-bold uppercase tracking-widest mb-2">Service levels</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-navy-900">Pick the level of service that fits your move</h2>
+            <p className="text-gray-500 mt-3">We don't publish fixed prices — every move gets its own written quote based on your needs.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {PLANS.map(plan => (
@@ -120,8 +117,7 @@ export default function HomeMovingPage() {
                   </span>
                 )}
                 <h3 className="font-bold text-navy-900 text-xl mb-1">{plan.name}</h3>
-                <p className="text-sm text-gray-500 mb-4">{plan.desc}</p>
-                <p className="text-3xl font-extrabold text-navy-900 mb-6">{plan.price}</p>
+                <p className="text-sm text-gray-500 mb-6">{plan.desc}</p>
                 <ul className="space-y-3 mb-8 flex-1">
                   {plan.features.map(f => (
                     <li key={f} className="flex items-start gap-2.5 text-sm text-gray-700">
@@ -131,7 +127,7 @@ export default function HomeMovingPage() {
                 </ul>
                 <Link href="/quote">
                   <Button className="w-full" variant={plan.featured ? 'default' : 'secondary'}>
-                    Choose {plan.name}
+                    Request a Quote
                   </Button>
                 </Link>
               </Card>
@@ -203,7 +199,7 @@ export default function HomeMovingPage() {
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 text-center">
         <h2 className="text-3xl sm:text-4xl font-extrabold text-navy-900 mb-4">Let's plan your move</h2>
-        <p className="text-gray-500 max-w-md mx-auto mb-8">Get a fixed quote in minutes — no obligation, no hidden fees.</p>
+        <p className="text-gray-500 max-w-md mx-auto mb-8">Get a written quote in minutes — no obligation, no hidden fees.</p>
         <Link href="/quote"><Button size="lg">Get a Free Moving Quote <ArrowRight className="w-4 h-4 ml-2" /></Button></Link>
       </section>
     </div>

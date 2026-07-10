@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import {
   Home as HomeIcon, Truck, Globe2, Building2, ShieldCheck, Clock, MapPin, Star, Users,
-  ArrowRight, PhoneCall, PackageCheck, ClipboardList, Calculator, Lock, Package, Boxes,
+  ArrowRight, PhoneCall, PackageCheck, ClipboardList, FileText, Package, Boxes,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -10,7 +10,7 @@ const TRUST_ITEMS = [
   { Icon: ShieldCheck, title: 'Insured', desc: 'Your move is fully covered.' },
   { Icon: Users, title: 'Vetted Movers', desc: 'Experienced, reliable moving professionals.' },
   { Icon: MapPin, title: 'Live Tracking', desc: 'Track your move in real time.' },
-  { Icon: Lock, title: 'Fixed Pricing', desc: 'No hidden fees. What we quote is what you pay.' },
+  { Icon: FileText, title: 'Free Quotes', desc: 'No obligation, written quotes for every move.' },
 ]
 
 const SERVICES = [
@@ -45,7 +45,7 @@ const SERVICES = [
 ]
 
 const MOVING_STEPS = [
-  { Icon: PhoneCall, title: 'Free survey & quote', desc: 'Tell us about your move — in person, on video, or online — and get a transparent, fixed quote.' },
+  { Icon: PhoneCall, title: 'Free survey & quote', desc: 'Tell us about your move — in person, on video, or online — and get a transparent, written quote.' },
   { Icon: ClipboardList, title: 'Plan & pack', desc: 'We schedule your date and pack your belongings with the right materials for every item.' },
   { Icon: Truck, title: 'Move day', desc: 'Our trained crews load, transport and deliver on time, with live updates along the way.' },
   { Icon: PackageCheck, title: 'Unpack & settle', desc: 'We unpack, assemble furniture, and clear away the boxes so you can just move in.' },
@@ -94,7 +94,7 @@ export default function HomePage() {
               </Link>
               <Link href="/pricing">
                 <Button size="lg" variant="secondary" className="w-full sm:w-auto border border-orange-300 text-orange-600 bg-white hover:bg-orange-50">
-                  <Calculator className="w-4 h-4 mr-2" /> Calculate Cost
+                  <FileText className="w-4 h-4 mr-2" /> How Pricing Works
                 </Button>
               </Link>
             </div>
@@ -160,7 +160,7 @@ export default function HomePage() {
             </p>
             <ul className="space-y-3 mb-8">
               {[
-                'Fixed, itemized quotes — no surprise fees on move day',
+                'Detailed, written quotes — no surprise fees on move day',
                 'Full-service packing with proper materials for fragile & high-value items',
                 'GPS-tracked trucks with live ETA updates',
                 'Comprehensive move insurance included as standard',
@@ -252,7 +252,7 @@ export default function HomePage() {
           <div className="relative">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">Ready to move? Let's talk.</h2>
             <p className="text-white/90 mb-8 max-w-md mx-auto text-sm leading-relaxed">
-              Get a fixed, no-obligation quote in minutes — for a home move, an office relocation, or a freight lane.
+              Get a written, no-obligation quote in minutes — for a home move, an office relocation, or a freight lane.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/quote">

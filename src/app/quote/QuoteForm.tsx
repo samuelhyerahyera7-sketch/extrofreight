@@ -74,7 +74,7 @@ export default function QuoteForm() {
         <h3 className="text-xl font-bold text-navy-900 mb-2">Quote request received</h3>
         <p className="text-gray-500 text-sm max-w-sm mx-auto">
           Thanks, {form.name.split(' ')[0] || 'there'} — a move coordinator will get back to you
-          within one business day with a fixed quote for your {form.moveType} move.
+          within one business day with a written quote for your {form.moveType} move.
         </p>
       </div>
     )
@@ -198,7 +198,7 @@ export default function QuoteForm() {
           <h3 className="font-bold text-navy-900 text-lg mb-1 flex items-center gap-2">
             <User className="w-5 h-5 text-orange-500" /> Your contact details
           </h3>
-          <p className="text-sm text-gray-500 mb-6">So we can send your fixed quote.</p>
+          <p className="text-sm text-gray-500 mb-6">So we can send your written quote.</p>
           <div className="space-y-5">
             <div>
               <label className="text-sm font-medium text-navy-900 mb-1.5 block">Full name</label>

@@ -15,7 +15,7 @@ export default function QuotePage() {
         <div className="lg:col-span-2">
           <h1 className="text-3xl sm:text-4xl font-extrabold text-navy-900 mb-4">Get a free quote</h1>
           <p className="text-gray-500 leading-relaxed mb-8">
-            Fill in a few details and a move coordinator will send you a fixed, written quote —
+            Fill in a few details and a move coordinator will send you a written quote —
             no obligation, no hidden fees.
           </p>
           <div className="space-y-4">
