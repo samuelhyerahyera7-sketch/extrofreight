@@ -68,15 +68,14 @@ export default function HomePage() {
             src="/images/hero-moving.jpg"
             alt="Extrofreight movers loading a truck outside a family home"
             className="h-full w-auto max-w-none"
+            style={{
+              WebkitMaskImage:
+                'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.12) 20%, rgba(0,0,0,0.5) 38%, black 58%)',
+              maskImage:
+                'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.12) 20%, rgba(0,0,0,0.5) 38%, black 58%)',
+            }}
           />
         </div>
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              'linear-gradient(to right, #ffffff 0%, #ffffff 22%, rgba(255,255,255,0.85) 34%, rgba(255,255,255,0.35) 48%, rgba(255,255,255,0) 62%)',
-          }}
-        />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 relative w-full">
           <div className="fade-up relative z-10 max-w-lg">
