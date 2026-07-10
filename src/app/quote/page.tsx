@@ -12,7 +12,10 @@ export default function QuotePage() {
   return (
     <div className="bg-gray-50 py-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-5 gap-10">
-        <div className="lg:col-span-2">
+        <Card className="order-1 lg:order-2 lg:col-span-3 p-6 sm:p-8">
+          <QuoteForm />
+        </Card>
+        <div className="order-2 lg:order-1 lg:col-span-2">
           <h1 className="text-3xl sm:text-4xl font-extrabold text-navy-900 mb-4">Get a free quote</h1>
           <p className="text-gray-500 leading-relaxed mb-8">
             Fill in a few details and a move coordinator will send you a written quote —
@@ -42,9 +45,6 @@ export default function QuotePage() {
             </Card>
           </div>
         </div>
-        <Card className="lg:col-span-3 p-6 sm:p-8">
-          <QuoteForm />
-        </Card>
       </div>
     </div>
   )

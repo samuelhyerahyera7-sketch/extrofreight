@@ -8,6 +8,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { Select } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 
 type MoveType = 'home' | 'office' | 'storage' | 'freight'
@@ -101,6 +102,26 @@ const ROOM_CATALOG: Partial<Record<MoveType, { room: string; items: string[] }[]
   ],
 }
 
+const SA_PROVINCES = [
+  'Eastern Cape', 'Free State', 'Gauteng', 'KwaZulu-Natal', 'Limpopo',
+  'Mpumalanga', 'North West', 'Northern Cape', 'Western Cape',
+]
+
+// No mapping API is wired up, so this is a lightweight native <datalist> suggestion
+// list (no key/billing required) rather than true address autocomplete.
+const SA_CITIES = [
+  'Johannesburg', 'Sandton', 'Pretoria', 'Centurion', 'Cape Town', 'Durban',
+  'Gqeberha (Port Elizabeth)', 'Bloemfontein', 'East London', 'Polokwane',
+  'Mbombela (Nelspruit)', 'Kimberley', 'Pietermaritzburg', 'George',
+  'Rustenburg', 'Randburg', 'Soweto', 'Vereeniging', 'Witbank (eMalahleni)', 'Stellenbosch',
+]
+
+type MoveDateMode = 'fixed' | 'flexible'
+
+const emptyAddress = { street: '', suburb: '', city: '', province: '' }
+
+type MoveAddress = typeof emptyAddress
+
 const STEPS = ['Move Type', 'Size', 'Items', 'Details', 'Contact', 'Review']
 
 const emptyForm = {
@@ -108,13 +129,19 @@ const emptyForm = {
   size: '',
   itemQty: {} as Record<string, number>,
   itemsOther: '',
-  from: '',
-  to: '',
+  from: { ...emptyAddress },
+  to: { ...emptyAddress },
+  dateMode: 'fixed' as MoveDateMode,
   date: '',
   notes: '',
   name: '',
   phone: '',
   email: '',
+}
+
+function formatAddress(a: MoveAddress) {
+  const parts = [a.street, a.suburb, a.city, a.province].filter(Boolean)
+  return parts.length ? parts.join(', ') : '—'
 }
 
 export default function QuoteForm() {
@@ -125,6 +152,10 @@ export default function QuoteForm() {
 
   function update<K extends keyof typeof emptyForm>(key: K, value: (typeof emptyForm)[K]) {
     setForm(f => ({ ...f, [key]: value }))
+  }
+
+  function updateAddress(which: 'from' | 'to', field: keyof MoveAddress, value: string) {
+    setForm(f => ({ ...f, [which]: { ...f[which], [field]: value } }))
   }
 
   function setQty(key: string, qty: number) {
@@ -140,11 +171,13 @@ export default function QuoteForm() {
     setOpenRooms(r => ({ ...r, [room]: !r[room] }))
   }
 
+  const addressComplete = (a: MoveAddress) => !!a.street && !!a.suburb && !!a.city
+
   const canProceed = [
     !!form.moveType,
     !!form.size,
     true,
-    !!form.from && !!form.to && !!form.date,
+    addressComplete(form.from) && addressComplete(form.to) && (form.dateMode === 'flexible' || !!form.date),
     !!form.name && !!form.phone && !!form.email,
     true,
   ][step]
@@ -180,6 +213,10 @@ export default function QuoteForm() {
 
   return (
     <div>
+      <datalist id="sa-cities">
+        {SA_CITIES.map(c => <option key={c} value={c} />)}
+      </datalist>
+
       {/* Stepper */}
       <div className="flex items-center mb-10">
         {STEPS.map((label, i) => (
@@ -351,23 +388,99 @@ export default function QuoteForm() {
             <MapPin className="w-5 h-5 text-orange-500" /> Move details
           </h3>
           <p className="text-sm text-gray-500 mb-6">Where and when is this happening?</p>
-          <div className="space-y-5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div>
-                <label className="text-sm font-medium text-navy-900 mb-1.5 block">Moving from</label>
-                <Input value={form.from} onChange={e => update('from', e.target.value)} placeholder="Suburb, city" />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-navy-900 mb-1.5 block">Moving to</label>
-                <Input value={form.to} onChange={e => update('to', e.target.value)} placeholder="Suburb, city" />
+          <div className="space-y-6">
+            <div>
+              <p className="text-sm font-semibold text-navy-900 mb-3">Moving from</p>
+              <div className="space-y-3">
+                <Input
+                  value={form.from.street}
+                  onChange={e => updateAddress('from', 'street', e.target.value)}
+                  placeholder="Street address"
+                />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <Input
+                    value={form.from.suburb}
+                    onChange={e => updateAddress('from', 'suburb', e.target.value)}
+                    placeholder="Suburb"
+                  />
+                  <Input
+                    list="sa-cities"
+                    value={form.from.city}
+                    onChange={e => updateAddress('from', 'city', e.target.value)}
+                    placeholder="City / Town"
+                  />
+                </div>
+                <Select value={form.from.province} onChange={e => updateAddress('from', 'province', e.target.value)}>
+                  <option value="">Province...</option>
+                  {SA_PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
+                </Select>
               </div>
             </div>
+
+            <div>
+              <p className="text-sm font-semibold text-navy-900 mb-3">Moving to</p>
+              <div className="space-y-3">
+                <Input
+                  value={form.to.street}
+                  onChange={e => updateAddress('to', 'street', e.target.value)}
+                  placeholder="Street address"
+                />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <Input
+                    value={form.to.suburb}
+                    onChange={e => updateAddress('to', 'suburb', e.target.value)}
+                    placeholder="Suburb"
+                  />
+                  <Input
+                    list="sa-cities"
+                    value={form.to.city}
+                    onChange={e => updateAddress('to', 'city', e.target.value)}
+                    placeholder="City / Town"
+                  />
+                </div>
+                <Select value={form.to.province} onChange={e => updateAddress('to', 'province', e.target.value)}>
+                  <option value="">Province...</option>
+                  {SA_PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
+                </Select>
+              </div>
+            </div>
+
             <div>
               <label className="text-sm font-medium text-navy-900 mb-1.5 flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5" /> Preferred date
+                <Calendar className="w-3.5 h-3.5" /> Moving date
               </label>
-              <Input type="date" value={form.date} onChange={e => update('date', e.target.value)} />
+              <div className="grid grid-cols-2 gap-3 mb-3">
+                <button
+                  type="button"
+                  onClick={() => update('dateMode', 'fixed')}
+                  className={cn(
+                    'rounded-lg border-2 px-4 py-2.5 text-sm font-semibold transition-colors',
+                    form.dateMode === 'fixed' ? 'border-orange-500 bg-orange-50 text-orange-700' : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                  )}
+                >
+                  Fixed date
+                </button>
+                <button
+                  type="button"
+                  onClick={() => update('dateMode', 'flexible')}
+                  className={cn(
+                    'rounded-lg border-2 px-4 py-2.5 text-sm font-semibold transition-colors',
+                    form.dateMode === 'flexible' ? 'border-orange-500 bg-orange-50 text-orange-700' : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                  )}
+                >
+                  Flexible dates
+                </button>
+              </div>
+              {form.dateMode === 'fixed' ? (
+                <Input type="date" value={form.date} onChange={e => update('date', e.target.value)} />
+              ) : (
+                <p className="text-xs text-gray-500 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
+                  No problem — moving between the 3rd and 25th of the month often costs less since
+                  trucks have more availability. A coordinator will confirm dates with you.
+                </p>
+              )}
             </div>
+
             <div>
               <label className="text-sm font-medium text-navy-900 mb-1.5 block">Anything else we should know?</label>
               <Textarea
@@ -417,16 +530,16 @@ export default function QuoteForm() {
               ['Size', form.size || '—'],
               ['Items', itemSummary.length ? itemSummary.join(', ') : '—'],
               ...(form.itemsOther ? [['Other items / cargo', form.itemsOther]] : []),
-              ['From', form.from || '—'],
-              ['To', form.to || '—'],
-              ['Preferred date', form.date || '—'],
+              ['From', formatAddress(form.from)],
+              ['To', formatAddress(form.to)],
+              ['Moving date', form.dateMode === 'flexible' ? 'Flexible' : (form.date || '—')],
               ['Name', form.name || '—'],
               ['Phone', form.phone || '—'],
               ['Email', form.email || '—'],
             ].map(([label, value]) => (
               <div key={label} className="flex items-start justify-between gap-4 px-5 py-3 text-sm">
                 <span className="text-gray-500 shrink-0">{label}</span>
-                <span className="font-semibold text-navy-900 text-right">{value}</span>
+                <span className="font-semibold text-navy-900 text-right break-words min-w-0">{value}</span>
               </div>
             ))}
           </div>
