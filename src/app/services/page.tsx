@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/card'
 
 export const metadata: Metadata = {
   title: 'Freight & Logistics Services | Extrofreight',
-  description: 'LTL & FTL freight, office relocation, warehousing, storage and shipment tracking — nationwide logistics from Extrofreight.',
+  description: 'Shared-load and dedicated-truck freight, office relocation, warehousing, storage and shipment tracking — nationwide logistics from Extrofreight.',
 }
 
 export default function ServicesPage() {
@@ -27,13 +27,13 @@ export default function ServicesPage() {
           <div className="w-12 h-12 rounded-xl bg-navy-900 text-white flex items-center justify-center mb-4">
             <Truck className="w-6 h-6" strokeWidth={1.75} />
           </div>
-          <h2 className="text-3xl font-extrabold text-navy-900 mb-4">Freight: LTL & FTL</h2>
+          <h2 className="text-3xl font-extrabold text-navy-900 mb-4">Freight, small or large</h2>
           <p className="text-gray-500 leading-relaxed mb-6">
-            Whether you're shipping a single pallet or a full truckload, our network of owned and
-            partner vehicles keeps your freight moving on optimized routes with live tracking.
+            Whether you're shipping a single pallet or need a whole truck to yourself, our network of
+            owned and partner vehicles keeps your freight moving on optimized routes with live tracking.
           </p>
           <ul className="space-y-3">
-            {['Less-than-truckload (LTL) for smaller shipments', 'Full-truckload (FTL) dedicated capacity', 'Cross-province & regional lanes', 'Real-time GPS tracking on every load'].map(f => (
+            {['Shared-truck shipments (LTL) for smaller loads — you only pay for the space you use', 'A dedicated truck just for your shipment (FTL) for larger loads', 'Cross-province & regional lanes', 'Real-time GPS tracking on every load'].map(f => (
               <li key={f} className="flex items-start gap-2.5 text-sm text-gray-700">
                 <Check className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" /> {f}
               </li>

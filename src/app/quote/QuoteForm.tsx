@@ -23,14 +23,23 @@ const SIZE_OPTIONS: Record<MoveType, string[]> = {
   home: ['Bachelor / Studio', '1 Bedroom', '2 Bedroom', '3 Bedroom', '4+ Bedroom', 'Full House'],
   office: ['Small (1-10 staff)', 'Medium (11-50 staff)', 'Large (50+ staff)'],
   storage: ['A few boxes', 'Single room', 'Full household', 'Business inventory'],
-  freight: ['Single pallet', 'Part load (LTL)', 'Full truckload (FTL)'],
+  freight: ['Single pallet', 'Part load (shared truck)', 'Full truckload (dedicated truck)'],
 }
 
-const STEPS = ['Move Type', 'Size', 'Details', 'Contact', 'Review']
+const ITEM_OPTIONS: Record<MoveType, string[]> = {
+  home: ['Sofa / Couch', 'Bed', 'Wardrobe', 'Fridge', 'Washing Machine', 'Dining Table & Chairs', 'TV & Stand', 'Bookshelf', 'Boxes', 'Piano', 'Safe'],
+  office: ['Desks', 'Office Chairs', 'Filing Cabinets', 'Monitors & PCs', 'Meeting Table', 'Server / IT Equipment', 'Boxes'],
+  storage: ['Furniture', 'Appliances', 'Boxes', 'Documents / Files', 'Seasonal Items'],
+  freight: [],
+}
+
+const STEPS = ['Move Type', 'Size', 'Items', 'Details', 'Contact', 'Review']
 
 const emptyForm = {
   moveType: '' as MoveType | '',
   size: '',
+  items: [] as string[],
+  itemsOther: '',
   from: '',
   to: '',
   date: '',
@@ -49,9 +58,17 @@ export default function QuoteForm() {
     setForm(f => ({ ...f, [key]: value }))
   }
 
+  function toggleItem(item: string) {
+    setForm(f => ({
+      ...f,
+      items: f.items.includes(item) ? f.items.filter(i => i !== item) : [...f.items, item],
+    }))
+  }
+
   const canProceed = [
     !!form.moveType,
     !!form.size,
+    true,
     !!form.from && !!form.to && !!form.date,
     !!form.name && !!form.phone && !!form.email,
     true,
@@ -156,8 +173,55 @@ export default function QuoteForm() {
         </div>
       )}
 
-      {/* Step 2: Details */}
-      {step === 2 && (
+      {/* Step 2: Items */}
+      {step === 2 && form.moveType && (
+        <div>
+          <h3 className="font-bold text-navy-900 text-lg mb-1">What's moving?</h3>
+          <p className="text-sm text-gray-500 mb-6">
+            {form.moveType === 'freight'
+              ? 'Tell us what the shipment contains.'
+              : 'Select everything that applies — this helps us plan crew size and truck space.'}
+          </p>
+
+          {form.moveType !== 'freight' && (
+            <div className="flex flex-wrap gap-2.5 mb-6">
+              {ITEM_OPTIONS[form.moveType].map(item => {
+                const selected = form.items.includes(item)
+                return (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => toggleItem(item)}
+                    className={cn(
+                      'inline-flex items-center gap-1.5 rounded-full border-2 px-4 py-2 text-sm font-medium transition-colors',
+                      selected ? 'border-orange-500 bg-orange-50 text-orange-700' : 'border-gray-200 text-gray-700 hover:border-gray-300'
+                    )}
+                  >
+                    {selected && <Check className="w-3.5 h-3.5" />}
+                    {item}
+                  </button>
+                )
+              })}
+            </div>
+          )}
+
+          <label className="text-sm font-medium text-navy-900 mb-1.5 block">
+            {form.moveType === 'freight' ? 'Cargo description' : 'Anything else moving that\'s not listed?'}
+          </label>
+          <Textarea
+            value={form.itemsOther}
+            onChange={e => update('itemsOther', e.target.value)}
+            placeholder={
+              form.moveType === 'freight'
+                ? 'What are you shipping, and roughly how much (weight/volume)?'
+                : 'e.g. gym equipment, artwork, garden furniture...'
+            }
+          />
+        </div>
+      )}
+
+      {/* Step 3: Details */}
+      {step === 3 && (
         <div>
           <h3 className="font-bold text-navy-900 text-lg mb-1 flex items-center gap-2">
             <MapPin className="w-5 h-5 text-orange-500" /> Move details
@@ -192,8 +256,8 @@ export default function QuoteForm() {
         </div>
       )}
 
-      {/* Step 3: Contact */}
-      {step === 3 && (
+      {/* Step 4: Contact */}
+      {step === 4 && (
         <div>
           <h3 className="font-bold text-navy-900 text-lg mb-1 flex items-center gap-2">
             <User className="w-5 h-5 text-orange-500" /> Your contact details
@@ -218,8 +282,8 @@ export default function QuoteForm() {
         </div>
       )}
 
-      {/* Step 4: Review */}
-      {step === 4 && (
+      {/* Step 5: Review */}
+      {step === 5 && (
         <div>
           <h3 className="font-bold text-navy-900 text-lg mb-1">Review your request</h3>
           <p className="text-sm text-gray-500 mb-6">Check the details below, then submit for your free quote.</p>
@@ -227,6 +291,8 @@ export default function QuoteForm() {
             {[
               ['Move type', MOVE_TYPES.find(m => m.id === form.moveType)?.label ?? '—'],
               ['Size', form.size || '—'],
+              ['Items', form.items.length ? form.items.join(', ') : '—'],
+              ...(form.itemsOther ? [['Other items / cargo', form.itemsOther]] : []),
               ['From', form.from || '—'],
               ['To', form.to || '—'],
               ['Preferred date', form.date || '—'],
@@ -234,8 +300,8 @@ export default function QuoteForm() {
               ['Phone', form.phone || '—'],
               ['Email', form.email || '—'],
             ].map(([label, value]) => (
-              <div key={label} className="flex items-center justify-between px-5 py-3 text-sm">
-                <span className="text-gray-500">{label}</span>
+              <div key={label} className="flex items-start justify-between gap-4 px-5 py-3 text-sm">
+                <span className="text-gray-500 shrink-0">{label}</span>
                 <span className="font-semibold text-navy-900 text-right">{value}</span>
               </div>
             ))}

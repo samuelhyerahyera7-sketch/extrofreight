@@ -10,7 +10,7 @@ import Logo from '@/components/Logo'
 const SERVICE_LINKS = [
   { label: 'Home Moving', href: '/home-moving' },
   { label: 'Office Relocation', href: '/services#office' },
-  { label: 'Freight (LTL / FTL)', href: '/services#freight' },
+  { label: 'Freight & Trucking', href: '/services#freight' },
   { label: 'Warehousing & Storage', href: '/services#warehousing' },
 ]
 

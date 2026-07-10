@@ -27,7 +27,7 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li><Link href="/home-moving" className="hover:text-white transition-colors">Home Moving</Link></li>
               <li><Link href="/services#office" className="hover:text-white transition-colors">Office Relocation</Link></li>
-              <li><Link href="/services#freight" className="hover:text-white transition-colors">Freight (LTL / FTL)</Link></li>
+              <li><Link href="/services#freight" className="hover:text-white transition-colors">Freight & Trucking</Link></li>
               <li><Link href="/services#warehousing" className="hover:text-white transition-colors">Warehousing & Storage</Link></li>
               <li><Link href="/track" className="hover:text-white transition-colors">Track a Shipment</Link></li>
             </ul>

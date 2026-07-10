@@ -41,6 +41,7 @@ const SERVICES = [
     desc: "Wherever you are in South Africa, we've got you covered.",
     href: '/services#freight',
     image: '/images/nationwide-service.jpg',
+    fit: 'contain' as const,
   },
 ]
 
@@ -54,7 +55,7 @@ const MOVING_STEPS = [
 const TESTIMONIALS = [
   { name: 'Naledi M.', role: 'Home move, Johannesburg → Cape Town', quote: 'Extrofreight packed our entire house in a day and nothing arrived broken. The crew was careful and genuinely kind.' },
   { name: 'Riaan P.', role: 'Office relocation, Pretoria', quote: 'We moved 40 staff over a weekend with zero downtime on Monday morning. Communication was excellent throughout.' },
-  { name: 'Thandiwe K.', role: 'Freight client, national retailer', quote: 'Reliable FTL lanes and real-time tracking. Extrofreight is now our default carrier for inland freight.' },
+  { name: 'Thandiwe K.', role: 'Freight client, national retailer', quote: 'Reliable dedicated-truck lanes and real-time tracking. Extrofreight is now our default carrier for inland freight.' },
 ]
 
 export default function HomePage() {
@@ -130,9 +131,13 @@ export default function HomePage() {
           {SERVICES.map(s => (
             <Link href={s.href} key={s.title}>
               <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow duration-200 p-0">
-                <div className="relative h-56">
+                <div className={`relative h-56 ${s.fit === 'contain' ? 'bg-gray-100' : ''}`}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={s.image} alt={s.title} className="absolute inset-0 w-full h-full object-cover" />
+                  <img
+                    src={s.image}
+                    alt={s.title}
+                    className={`absolute inset-0 w-full h-full ${s.fit === 'contain' ? 'object-contain' : 'object-cover'}`}
+                  />
                   <div className="absolute -bottom-5 left-5 w-11 h-11 rounded-xl bg-navy-900 text-white flex items-center justify-center shadow-md">
                     <s.icon className="w-5 h-5" strokeWidth={1.75} />
                   </div>
