@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import {
-  Home as HomeIcon, Building2, Warehouse, Truck, Check, ChevronLeft, ChevronRight,
-  CheckCircle2, MapPin, Calendar, User,
+  Home as HomeIcon, Building2, Warehouse, Truck, Check, ChevronLeft, ChevronRight, ChevronDown,
+  CheckCircle2, MapPin, Calendar, User, Minus, Plus,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -26,11 +26,79 @@ const SIZE_OPTIONS: Record<MoveType, string[]> = {
   freight: ['Single pallet', 'Part load (shared truck)', 'Full truckload (dedicated truck)'],
 }
 
-const ITEM_OPTIONS: Record<MoveType, string[]> = {
-  home: ['Sofa / Couch', 'Bed', 'Wardrobe', 'Fridge', 'Washing Machine', 'Dining Table & Chairs', 'TV & Stand', 'Bookshelf', 'Boxes', 'Piano', 'Safe'],
-  office: ['Desks', 'Office Chairs', 'Filing Cabinets', 'Monitors & PCs', 'Meeting Table', 'Server / IT Equipment', 'Boxes'],
-  storage: ['Furniture', 'Appliances', 'Boxes', 'Documents / Files', 'Seasonal Items'],
-  freight: [],
+// Item names bake in the size/type (e.g. "TV (55"-70")", "Couch (L-Shape)") so we get
+// enough detail to estimate volume without ever having to ask for exact measurements.
+const ROOM_CATALOG: Partial<Record<MoveType, { room: string; items: string[] }[]>> = {
+  home: [
+    {
+      room: 'Lounge',
+      items: [
+        'Couch (2-Seater)', 'Couch (3-Seater)', 'Couch (L-Shape / Corner)', 'Armchair',
+        'Coffee Table (Wood)', 'Coffee Table (Glass)', 'TV (32"-55")', 'TV (55"-70")',
+        'TV Unit / Wall Cabinet', 'Bookshelf', 'Rug / Carpet', 'Sound System',
+      ],
+    },
+    {
+      room: 'Dining Room',
+      items: [
+        'Dining Table (4-6 Seater)', 'Dining Table (8+ Seater)', 'Dining Chair',
+        'Sideboard / Buffet', 'Bar Counter', 'Bar Stool',
+      ],
+    },
+    {
+      room: 'Kitchen & Scullery',
+      items: [
+        'Fridge (Standard)', 'Fridge (Side-by-Side)', 'Bar Fridge', 'Microwave',
+        'Dishwasher', 'Washing Machine', 'Tumble Dryer', 'Oven / Stove', 'Kitchen Table & Chairs',
+      ],
+    },
+    {
+      room: 'Study',
+      items: ['Desk', 'Office Chair', 'Bookcase', 'Filing Cabinet', 'Printer'],
+    },
+    {
+      room: 'Bedroom',
+      items: [
+        'Bed (Single)', 'Bed (Double / Queen)', 'Bed (King)', 'Wardrobe (Small)',
+        'Wardrobe (Large)', 'Dresser / Chest of Drawers', 'Bedside Table',
+      ],
+    },
+    {
+      room: 'Garage & Outdoor',
+      items: [
+        'Patio Table & Chairs', 'BBQ / Braai', 'Bicycle', 'Lawnmower',
+        'Tool Cabinet', 'Garden / Storage Boxes',
+      ],
+    },
+    {
+      room: 'Boxes',
+      items: ['Small Boxes', 'Medium Boxes', 'Large Boxes', 'Wardrobe Boxes'],
+    },
+  ],
+  office: [
+    {
+      room: 'Workstations',
+      items: ['Desk', 'Office Chair', 'Filing Cabinet', 'Monitor / PC', 'Printer'],
+    },
+    {
+      room: 'Meeting & Common Areas',
+      items: ['Meeting Table', 'Meeting Chair', 'Reception Desk', 'Sofa / Couch', 'Boardroom Screen'],
+    },
+    {
+      room: 'Kitchen & Storage',
+      items: ['Fridge', 'Microwave', 'Storage Shelving'],
+    },
+    {
+      room: 'Boxes',
+      items: ['Small Boxes', 'Medium Boxes', 'Large Boxes'],
+    },
+  ],
+  storage: [
+    {
+      room: 'Items',
+      items: ['Furniture (large)', 'Furniture (small)', 'Appliances', 'Boxes', 'Documents / Files', 'Seasonal Items'],
+    },
+  ],
 }
 
 const STEPS = ['Move Type', 'Size', 'Items', 'Details', 'Contact', 'Review']
@@ -38,7 +106,7 @@ const STEPS = ['Move Type', 'Size', 'Items', 'Details', 'Contact', 'Review']
 const emptyForm = {
   moveType: '' as MoveType | '',
   size: '',
-  items: [] as string[],
+  itemQty: {} as Record<string, number>,
   itemsOther: '',
   from: '',
   to: '',
@@ -53,16 +121,23 @@ export default function QuoteForm() {
   const [step, setStep] = useState(0)
   const [submitted, setSubmitted] = useState(false)
   const [form, setForm] = useState(emptyForm)
+  const [openRooms, setOpenRooms] = useState<Record<string, boolean>>({ Lounge: true, Workstations: true, Items: true })
 
   function update<K extends keyof typeof emptyForm>(key: K, value: (typeof emptyForm)[K]) {
     setForm(f => ({ ...f, [key]: value }))
   }
 
-  function toggleItem(item: string) {
-    setForm(f => ({
-      ...f,
-      items: f.items.includes(item) ? f.items.filter(i => i !== item) : [...f.items, item],
-    }))
+  function setQty(key: string, qty: number) {
+    setForm(f => {
+      const itemQty = { ...f.itemQty }
+      if (qty <= 0) delete itemQty[key]
+      else itemQty[key] = qty
+      return { ...f, itemQty }
+    })
+  }
+
+  function toggleRoom(room: string) {
+    setOpenRooms(r => ({ ...r, [room]: !r[room] }))
   }
 
   const canProceed = [
@@ -84,6 +159,10 @@ export default function QuoteForm() {
     setSubmitted(true)
   }
 
+  const itemSummary = Object.entries(form.itemQty)
+    .filter(([, qty]) => qty > 0)
+    .map(([item, qty]) => `${qty} x ${item}`)
+
   if (submitted) {
     return (
       <div className="text-center py-10">
@@ -96,6 +175,8 @@ export default function QuoteForm() {
       </div>
     )
   }
+
+  const rooms = form.moveType ? ROOM_CATALOG[form.moveType] : undefined
 
   return (
     <div>
@@ -178,28 +259,71 @@ export default function QuoteForm() {
         <div>
           <h3 className="font-bold text-navy-900 text-lg mb-1">What's moving?</h3>
           <p className="text-sm text-gray-500 mb-6">
-            {form.moveType === 'freight'
-              ? 'Tell us what the shipment contains.'
-              : 'Select everything that applies — this helps us plan crew size and truck space.'}
+            {form.moveType === 'freight' ? (
+              'Tell us what the shipment contains.'
+            ) : (
+              <>
+                Pick the closest match and how many — sizes and types are built into the list
+                (e.g. couch shape, TV size, fridge type), so we don&apos;t need exact measurements.
+                Something unusual? Add it below.
+              </>
+            )}
           </p>
 
-          {form.moveType !== 'freight' && (
-            <div className="flex flex-wrap gap-2.5 mb-6">
-              {ITEM_OPTIONS[form.moveType].map(item => {
-                const selected = form.items.includes(item)
+          {form.moveType !== 'freight' && rooms && (
+            <div className="space-y-3 mb-6">
+              {rooms.map(({ room, items }) => {
+                const roomCount = items.reduce((sum, item) => sum + (form.itemQty[`${room}::${item}`] || 0), 0)
+                const isOpen = !!openRooms[room]
                 return (
-                  <button
-                    key={item}
-                    type="button"
-                    onClick={() => toggleItem(item)}
-                    className={cn(
-                      'inline-flex items-center gap-1.5 rounded-full border-2 px-4 py-2 text-sm font-medium transition-colors',
-                      selected ? 'border-orange-500 bg-orange-50 text-orange-700' : 'border-gray-200 text-gray-700 hover:border-gray-300'
+                  <div key={room} className="rounded-xl border border-gray-200 overflow-hidden">
+                    <button
+                      type="button"
+                      onClick={() => toggleRoom(room)}
+                      className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors"
+                    >
+                      <span className="text-sm font-semibold text-navy-900 flex items-center gap-2">
+                        {room}
+                        {roomCount > 0 && (
+                          <span className="text-xs font-bold text-orange-700 bg-orange-100 rounded-full px-2 py-0.5">
+                            {roomCount}
+                          </span>
+                        )}
+                      </span>
+                      <ChevronDown className={cn('w-4 h-4 text-gray-400 transition-transform', isOpen && 'rotate-180')} />
+                    </button>
+                    {isOpen && (
+                      <div className="divide-y divide-gray-100">
+                        {items.map(item => {
+                          const key = `${room}::${item}`
+                          const qty = form.itemQty[key] || 0
+                          return (
+                            <div key={item} className="flex items-center justify-between px-4 py-2.5">
+                              <span className="text-sm text-gray-700">{item}</span>
+                              <div className="flex items-center gap-3">
+                                <button
+                                  type="button"
+                                  onClick={() => setQty(key, qty - 1)}
+                                  disabled={qty === 0}
+                                  className="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-orange-400 hover:text-orange-600 disabled:opacity-30 disabled:hover:border-gray-300 disabled:hover:text-gray-500 transition-colors"
+                                >
+                                  <Minus className="w-3.5 h-3.5" />
+                                </button>
+                                <span className="w-5 text-center text-sm font-semibold text-navy-900">{qty}</span>
+                                <button
+                                  type="button"
+                                  onClick={() => setQty(key, qty + 1)}
+                                  className="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-orange-400 hover:text-orange-600 transition-colors"
+                                >
+                                  <Plus className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
                     )}
-                  >
-                    {selected && <Check className="w-3.5 h-3.5" />}
-                    {item}
-                  </button>
+                  </div>
                 )
               })}
             </div>
@@ -214,7 +338,7 @@ export default function QuoteForm() {
             placeholder={
               form.moveType === 'freight'
                 ? 'What are you shipping, and roughly how much (weight/volume)?'
-                : 'e.g. gym equipment, artwork, garden furniture...'
+                : 'e.g. piano, safe, gym equipment, artwork — include size if it\'s unusually large'
             }
           />
         </div>
@@ -291,7 +415,7 @@ export default function QuoteForm() {
             {[
               ['Move type', MOVE_TYPES.find(m => m.id === form.moveType)?.label ?? '—'],
               ['Size', form.size || '—'],
-              ['Items', form.items.length ? form.items.join(', ') : '—'],
+              ['Items', itemSummary.length ? itemSummary.join(', ') : '—'],
               ...(form.itemsOther ? [['Other items / cargo', form.itemsOther]] : []),
               ['From', form.from || '—'],
               ['To', form.to || '—'],
