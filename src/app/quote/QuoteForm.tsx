@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import {
-  Home as HomeIcon, Building2, Warehouse, Truck, Check, ChevronLeft, ChevronRight, ChevronDown,
-  CheckCircle2, MapPin, Calendar, User, Minus, Plus,
+  Home as HomeIcon, Building2, Package, Truck, Check, ChevronLeft, ChevronRight, ChevronDown,
+  CheckCircle2, MapPin, Calendar, User, Minus, Plus, ShoppingCart,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -11,19 +11,18 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 
-type MoveType = 'home' | 'office' | 'storage' | 'freight'
+type MoveType = 'home' | 'office' | 'boxShop' | 'freight'
 
 const MOVE_TYPES: { id: MoveType; label: string; Icon: typeof HomeIcon }[] = [
   { id: 'home', label: 'Home Move', Icon: HomeIcon },
   { id: 'office', label: 'Office Move', Icon: Building2 },
-  { id: 'storage', label: 'Storage', Icon: Warehouse },
+  { id: 'boxShop', label: 'Box Shop', Icon: Package },
   { id: 'freight', label: 'Freight', Icon: Truck },
 ]
 
-const SIZE_OPTIONS: Record<MoveType, string[]> = {
+const SIZE_OPTIONS: Partial<Record<MoveType, string[]>> = {
   home: ['Bachelor / Studio', '1 Bedroom', '2 Bedroom', '3 Bedroom', '4+ Bedroom', 'Full House'],
   office: ['Small (1-10 staff)', 'Medium (11-50 staff)', 'Large (50+ staff)'],
-  storage: ['A few boxes', 'Single room', 'Full household', 'Business inventory'],
   freight: ['Single pallet', 'Part load (shared truck)', 'Full truckload (dedicated truck)'],
 }
 
@@ -94,13 +93,22 @@ const ROOM_CATALOG: Partial<Record<MoveType, { room: string; items: string[] }[]
       items: ['Small Boxes', 'Medium Boxes', 'Large Boxes'],
     },
   ],
-  storage: [
-    {
-      room: 'Items',
-      items: ['Furniture (large)', 'Furniture (small)', 'Appliances', 'Boxes', 'Documents / Files', 'Seasonal Items'],
-    },
-  ],
 }
+
+// Box Shop: real retail products with real prices — unlike a moving quote, box/packing
+// supplies are a straightforward retail purchase, so a fixed price list makes sense here.
+const BOX_PRODUCTS = [
+  { name: 'Small Box', price: 25 },
+  { name: 'Medium Box', price: 35 },
+  { name: 'Large Box', price: 45 },
+  { name: 'Wardrobe Box', price: 120 },
+  { name: 'Book / Heavy-Duty Box', price: 30 },
+  { name: 'Bubble Wrap (10m roll)', price: 150 },
+  { name: 'Packing Tape (roll)', price: 35 },
+  { name: 'Furniture Blanket', price: 80 },
+  { name: 'Mattress Bag', price: 90 },
+  { name: 'Packing Paper (bundle)', price: 60 },
+]
 
 const SA_PROVINCES = [
   'Eastern Cape', 'Free State', 'Gauteng', 'KwaZulu-Natal', 'Limpopo',
@@ -117,18 +125,34 @@ const SA_CITIES = [
 ]
 
 type MoveDateMode = 'fixed' | 'flexible'
+type StepKey = 'moveType' | 'size' | 'items' | 'shop' | 'details' | 'contact' | 'review'
 
 const emptyAddress = { street: '', suburb: '', city: '', province: '' }
-
 type MoveAddress = typeof emptyAddress
 
-const STEPS = ['Move Type', 'Size', 'Items', 'Details', 'Contact', 'Review']
+const BASE_STEPS: { key: StepKey; label: string }[] = [
+  { key: 'moveType', label: 'Move Type' },
+  { key: 'size', label: 'Size' },
+  { key: 'items', label: 'Items' },
+  { key: 'details', label: 'Details' },
+  { key: 'contact', label: 'Contact' },
+  { key: 'review', label: 'Review' },
+]
+
+const BOX_SHOP_STEPS: { key: StepKey; label: string }[] = [
+  { key: 'moveType', label: 'Move Type' },
+  { key: 'shop', label: 'Shop' },
+  { key: 'details', label: 'Delivery' },
+  { key: 'contact', label: 'Contact' },
+  { key: 'review', label: 'Review' },
+]
 
 const emptyForm = {
   moveType: '' as MoveType | '',
   size: '',
   itemQty: {} as Record<string, number>,
   itemsOther: '',
+  boxQty: {} as Record<string, number>,
   from: { ...emptyAddress },
   to: { ...emptyAddress },
   dateMode: 'fixed' as MoveDateMode,
@@ -148,7 +172,11 @@ export default function QuoteForm() {
   const [step, setStep] = useState(0)
   const [submitted, setSubmitted] = useState(false)
   const [form, setForm] = useState(emptyForm)
-  const [openRooms, setOpenRooms] = useState<Record<string, boolean>>({ Lounge: true, Workstations: true, Items: true })
+  const [openRooms, setOpenRooms] = useState<Record<string, boolean>>({ Lounge: true, Workstations: true })
+
+  const isBoxShop = form.moveType === 'boxShop'
+  const steps = isBoxShop ? BOX_SHOP_STEPS : BASE_STEPS
+  const currentKey = steps[step]?.key
 
   function update<K extends keyof typeof emptyForm>(key: K, value: (typeof emptyForm)[K]) {
     setForm(f => ({ ...f, [key]: value }))
@@ -167,23 +195,41 @@ export default function QuoteForm() {
     })
   }
 
+  function setBoxQty(name: string, qty: number) {
+    setForm(f => {
+      const boxQty = { ...f.boxQty }
+      if (qty <= 0) delete boxQty[name]
+      else boxQty[name] = qty
+      return { ...f, boxQty }
+    })
+  }
+
   function toggleRoom(room: string) {
     setOpenRooms(r => ({ ...r, [room]: !r[room] }))
   }
 
   const addressComplete = (a: MoveAddress) => !!a.street && !!a.suburb && !!a.city
 
-  const canProceed = [
-    !!form.moveType,
-    !!form.size,
-    true,
-    addressComplete(form.from) && addressComplete(form.to) && (form.dateMode === 'flexible' || !!form.date),
-    !!form.name && !!form.phone && !!form.email,
-    true,
-  ][step]
+  const boxTotal = Object.entries(form.boxQty).reduce((sum, [name, qty]) => {
+    const product = BOX_PRODUCTS.find(p => p.name === name)
+    return sum + (product ? product.price * qty : 0)
+  }, 0)
+
+  const stepValid: Record<StepKey, boolean> = {
+    moveType: !!form.moveType,
+    size: !!form.size,
+    items: true,
+    shop: Object.keys(form.boxQty).length > 0,
+    details: isBoxShop
+      ? addressComplete(form.to) && (form.dateMode === 'flexible' || !!form.date)
+      : addressComplete(form.from) && addressComplete(form.to) && (form.dateMode === 'flexible' || !!form.date),
+    contact: !!form.name && !!form.phone && !!form.email,
+    review: true,
+  }
+  const canProceed = currentKey ? stepValid[currentKey] : false
 
   function next() {
-    if (step < STEPS.length - 1) setStep(step + 1)
+    if (step < steps.length - 1) setStep(step + 1)
   }
   function back() {
     if (step > 0) setStep(step - 1)
@@ -196,20 +242,29 @@ export default function QuoteForm() {
     .filter(([, qty]) => qty > 0)
     .map(([item, qty]) => `${qty} x ${item}`)
 
+  const boxSummary = Object.entries(form.boxQty)
+    .filter(([, qty]) => qty > 0)
+    .map(([name, qty]) => `${qty} x ${name}`)
+
   if (submitted) {
     return (
       <div className="text-center py-10">
         <CheckCircle2 className="w-14 h-14 text-orange-500 mx-auto mb-4" />
-        <h3 className="text-xl font-bold text-navy-900 mb-2">Quote request received</h3>
+        <h3 className="text-xl font-bold text-navy-900 mb-2">
+          {isBoxShop ? 'Order request received' : 'Quote request received'}
+        </h3>
         <p className="text-gray-500 text-sm max-w-sm mx-auto">
-          Thanks, {form.name.split(' ')[0] || 'there'} — a move coordinator will get back to you
-          within one business day with a written quote for your {form.moveType} move.
+          {isBoxShop ? (
+            <>Thanks, {form.name.split(' ')[0] || 'there'} — we'll confirm stock and delivery cost, then get your boxes and packing supplies out to you.</>
+          ) : (
+            <>Thanks, {form.name.split(' ')[0] || 'there'} — a move coordinator will get back to you within one business day with a written quote for your {form.moveType} move.</>
+          )}
         </p>
       </div>
     )
   }
 
-  const rooms = form.moveType ? ROOM_CATALOG[form.moveType] : undefined
+  const rooms = form.moveType && form.moveType !== 'boxShop' && form.moveType !== 'freight' ? ROOM_CATALOG[form.moveType] : undefined
 
   return (
     <div>
@@ -219,8 +274,8 @@ export default function QuoteForm() {
 
       {/* Stepper */}
       <div className="flex items-center mb-10">
-        {STEPS.map((label, i) => (
-          <div key={label} className="flex items-center flex-1 last:flex-none">
+        {steps.map((s, i) => (
+          <div key={s.key} className="flex items-center flex-1 last:flex-none">
             <div className="flex flex-col items-center gap-1.5">
               <div
                 className={cn(
@@ -233,18 +288,18 @@ export default function QuoteForm() {
                 {i < step ? <Check className="w-4 h-4" /> : i + 1}
               </div>
               <span className={cn('text-[11px] font-medium hidden sm:block', i <= step ? 'text-navy-900' : 'text-gray-400')}>
-                {label}
+                {s.label}
               </span>
             </div>
-            {i < STEPS.length - 1 && (
+            {i < steps.length - 1 && (
               <div className={cn('h-0.5 flex-1 mx-1.5 -mt-5 sm:mt-0', i < step ? 'bg-orange-500' : 'bg-gray-200')} />
             )}
           </div>
         ))}
       </div>
 
-      {/* Step 0: Move type */}
-      {step === 0 && (
+      {/* Move type */}
+      {currentKey === 'moveType' && (
         <div>
           <h3 className="font-bold text-navy-900 text-lg mb-1">What are you moving?</h3>
           <p className="text-sm text-gray-500 mb-6">Choose the option that best fits your quote.</p>
@@ -267,13 +322,13 @@ export default function QuoteForm() {
         </div>
       )}
 
-      {/* Step 1: Size */}
-      {step === 1 && form.moveType && (
+      {/* Size */}
+      {currentKey === 'size' && form.moveType && form.moveType !== 'boxShop' && (
         <div>
           <h3 className="font-bold text-navy-900 text-lg mb-1">What size is your move?</h3>
           <p className="text-sm text-gray-500 mb-6">This helps us estimate crew size and truck space.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {SIZE_OPTIONS[form.moveType].map(size => (
+            {(SIZE_OPTIONS[form.moveType] ?? []).map(size => (
               <button
                 key={size}
                 type="button"
@@ -291,8 +346,8 @@ export default function QuoteForm() {
         </div>
       )}
 
-      {/* Step 2: Items */}
-      {step === 2 && form.moveType && (
+      {/* Items */}
+      {currentKey === 'items' && form.moveType && (
         <div>
           <h3 className="font-bold text-navy-900 text-lg mb-1">What's moving?</h3>
           <p className="text-sm text-gray-500 mb-6">
@@ -381,44 +436,93 @@ export default function QuoteForm() {
         </div>
       )}
 
-      {/* Step 3: Details */}
-      {step === 3 && (
+      {/* Box Shop */}
+      {currentKey === 'shop' && (
         <div>
           <h3 className="font-bold text-navy-900 text-lg mb-1 flex items-center gap-2">
-            <MapPin className="w-5 h-5 text-orange-500" /> Move details
+            <ShoppingCart className="w-5 h-5 text-orange-500" /> Boxes & packing supplies
           </h3>
-          <p className="text-sm text-gray-500 mb-6">Where and when is this happening?</p>
-          <div className="space-y-6">
-            <div>
-              <p className="text-sm font-semibold text-navy-900 mb-3">Moving from</p>
-              <div className="space-y-3">
-                <Input
-                  value={form.from.street}
-                  onChange={e => updateAddress('from', 'street', e.target.value)}
-                  placeholder="Street address"
-                />
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <Input
-                    value={form.from.suburb}
-                    onChange={e => updateAddress('from', 'suburb', e.target.value)}
-                    placeholder="Suburb"
-                  />
-                  <Input
-                    list="sa-cities"
-                    value={form.from.city}
-                    onChange={e => updateAddress('from', 'city', e.target.value)}
-                    placeholder="City / Town"
-                  />
+          <p className="text-sm text-gray-500 mb-6">Pick what you need — we'll confirm stock and delivery cost with your order.</p>
+          <div className="rounded-xl border border-gray-200 divide-y divide-gray-100 mb-4">
+            {BOX_PRODUCTS.map(product => {
+              const qty = form.boxQty[product.name] || 0
+              return (
+                <div key={product.name} className="flex items-center justify-between px-4 py-3">
+                  <div>
+                    <p className="text-sm font-medium text-navy-900">{product.name}</p>
+                    <p className="text-xs text-gray-500">R{product.price} each</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setBoxQty(product.name, qty - 1)}
+                      disabled={qty === 0}
+                      className="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-orange-400 hover:text-orange-600 disabled:opacity-30 disabled:hover:border-gray-300 disabled:hover:text-gray-500 transition-colors"
+                    >
+                      <Minus className="w-3.5 h-3.5" />
+                    </button>
+                    <span className="w-5 text-center text-sm font-semibold text-navy-900">{qty}</span>
+                    <button
+                      type="button"
+                      onClick={() => setBoxQty(product.name, qty + 1)}
+                      className="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-orange-400 hover:text-orange-600 transition-colors"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
-                <Select value={form.from.province} onChange={e => updateAddress('from', 'province', e.target.value)}>
-                  <option value="">Province...</option>
-                  {SA_PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
-                </Select>
+              )
+            })}
+          </div>
+          <div className="flex items-center justify-between rounded-xl bg-navy-900 px-5 py-4">
+            <span className="text-sm font-semibold text-white">Estimated total</span>
+            <span className="text-lg font-extrabold text-white">R{boxTotal}</span>
+          </div>
+        </div>
+      )}
+
+      {/* Details / Delivery */}
+      {currentKey === 'details' && (
+        <div>
+          <h3 className="font-bold text-navy-900 text-lg mb-1 flex items-center gap-2">
+            <MapPin className="w-5 h-5 text-orange-500" /> {isBoxShop ? 'Delivery details' : 'Move details'}
+          </h3>
+          <p className="text-sm text-gray-500 mb-6">
+            {isBoxShop ? 'Where and when should we deliver?' : 'Where and when is this happening?'}
+          </p>
+          <div className="space-y-6">
+            {!isBoxShop && (
+              <div>
+                <p className="text-sm font-semibold text-navy-900 mb-3">Moving from</p>
+                <div className="space-y-3">
+                  <Input
+                    value={form.from.street}
+                    onChange={e => updateAddress('from', 'street', e.target.value)}
+                    placeholder="Street address"
+                  />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <Input
+                      value={form.from.suburb}
+                      onChange={e => updateAddress('from', 'suburb', e.target.value)}
+                      placeholder="Suburb"
+                    />
+                    <Input
+                      list="sa-cities"
+                      value={form.from.city}
+                      onChange={e => updateAddress('from', 'city', e.target.value)}
+                      placeholder="City / Town"
+                    />
+                  </div>
+                  <Select value={form.from.province} onChange={e => updateAddress('from', 'province', e.target.value)}>
+                    <option value="">Province...</option>
+                    {SA_PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
+                  </Select>
+                </div>
               </div>
-            </div>
+            )}
 
             <div>
-              <p className="text-sm font-semibold text-navy-900 mb-3">Moving to</p>
+              <p className="text-sm font-semibold text-navy-900 mb-3">{isBoxShop ? 'Delivery address' : 'Moving to'}</p>
               <div className="space-y-3">
                 <Input
                   value={form.to.street}
@@ -447,7 +551,7 @@ export default function QuoteForm() {
 
             <div>
               <label className="text-sm font-medium text-navy-900 mb-1.5 flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5" /> Moving date
+                <Calendar className="w-3.5 h-3.5" /> {isBoxShop ? 'Preferred delivery date' : 'Moving date'}
               </label>
               <div className="grid grid-cols-2 gap-3 mb-3">
                 <button
@@ -475,31 +579,34 @@ export default function QuoteForm() {
                 <Input type="date" value={form.date} onChange={e => update('date', e.target.value)} />
               ) : (
                 <p className="text-xs text-gray-500 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
-                  No problem — moving between the 3rd and 25th of the month often costs less since
-                  trucks have more availability. A coordinator will confirm dates with you.
+                  {isBoxShop
+                    ? "No problem — we'll confirm the soonest available delivery slot with you."
+                    : 'No problem — moving between the 3rd and 25th of the month often costs less since trucks have more availability. A coordinator will confirm dates with you.'}
                 </p>
               )}
             </div>
 
-            <div>
-              <label className="text-sm font-medium text-navy-900 mb-1.5 block">Anything else we should know?</label>
-              <Textarea
-                value={form.notes}
-                onChange={e => update('notes', e.target.value)}
-                placeholder="Stairs, lift access, fragile or high-value items, etc."
-              />
-            </div>
+            {!isBoxShop && (
+              <div>
+                <label className="text-sm font-medium text-navy-900 mb-1.5 block">Anything else we should know?</label>
+                <Textarea
+                  value={form.notes}
+                  onChange={e => update('notes', e.target.value)}
+                  placeholder="Stairs, lift access, fragile or high-value items, etc."
+                />
+              </div>
+            )}
           </div>
         </div>
       )}
 
-      {/* Step 4: Contact */}
-      {step === 4 && (
+      {/* Contact */}
+      {currentKey === 'contact' && (
         <div>
           <h3 className="font-bold text-navy-900 text-lg mb-1 flex items-center gap-2">
             <User className="w-5 h-5 text-orange-500" /> Your contact details
           </h3>
-          <p className="text-sm text-gray-500 mb-6">So we can send your written quote.</p>
+          <p className="text-sm text-gray-500 mb-6">So we can send your {isBoxShop ? 'order confirmation' : 'written quote'}.</p>
           <div className="space-y-5">
             <div>
               <label className="text-sm font-medium text-navy-900 mb-1.5 block">Full name</label>
@@ -519,13 +626,23 @@ export default function QuoteForm() {
         </div>
       )}
 
-      {/* Step 5: Review */}
-      {step === 5 && (
+      {/* Review */}
+      {currentKey === 'review' && (
         <div>
-          <h3 className="font-bold text-navy-900 text-lg mb-1">Review your request</h3>
-          <p className="text-sm text-gray-500 mb-6">Check the details below, then submit for your free quote.</p>
+          <h3 className="font-bold text-navy-900 text-lg mb-1">{isBoxShop ? 'Review your order' : 'Review your request'}</h3>
+          <p className="text-sm text-gray-500 mb-6">
+            {isBoxShop ? 'Check your order below, then submit.' : 'Check the details below, then submit for your free quote.'}
+          </p>
           <div className="rounded-xl border border-gray-200 divide-y divide-gray-100">
-            {[
+            {(isBoxShop ? [
+              ['Order', boxSummary.length ? boxSummary.join(', ') : '—'],
+              ['Estimated total', `R${boxTotal}`],
+              ['Deliver to', formatAddress(form.to)],
+              ['Delivery date', form.dateMode === 'flexible' ? 'Flexible' : (form.date || '—')],
+              ['Name', form.name || '—'],
+              ['Phone', form.phone || '—'],
+              ['Email', form.email || '—'],
+            ] : [
               ['Move type', MOVE_TYPES.find(m => m.id === form.moveType)?.label ?? '—'],
               ['Size', form.size || '—'],
               ['Items', itemSummary.length ? itemSummary.join(', ') : '—'],
@@ -536,7 +653,7 @@ export default function QuoteForm() {
               ['Name', form.name || '—'],
               ['Phone', form.phone || '—'],
               ['Email', form.email || '—'],
-            ].map(([label, value]) => (
+            ]).map(([label, value]) => (
               <div key={label} className="flex items-start justify-between gap-4 px-5 py-3 text-sm">
                 <span className="text-gray-500 shrink-0">{label}</span>
                 <span className="font-semibold text-navy-900 text-right break-words min-w-0">{value}</span>
@@ -551,13 +668,13 @@ export default function QuoteForm() {
         <Button type="button" variant="secondary" onClick={back} disabled={step === 0}>
           <ChevronLeft className="w-4 h-4 mr-1" /> Back
         </Button>
-        {step < STEPS.length - 1 ? (
+        {step < steps.length - 1 ? (
           <Button type="button" onClick={next} disabled={!canProceed}>
             Next <ChevronRight className="w-4 h-4 ml-1" />
           </Button>
         ) : (
           <Button type="button" onClick={handleSubmit}>
-            Get My Free Quote
+            {isBoxShop ? 'Place Order' : 'Get My Free Quote'}
           </Button>
         )}
       </div>
