@@ -71,7 +71,7 @@ export default function HomePage() {
         />
         <div className="px-4 pt-8 pb-2">
           <span className="inline-block text-[11px] font-bold uppercase tracking-widest text-orange-600 bg-orange-50 rounded-full px-3 py-1 mb-3">
-            Established in 2022
+            Established in 2021
           </span>
           <h1 className="text-4xl font-extrabold text-navy-900 leading-[1.05] mb-4">
             Moving made <span className="text-orange-500">simple.</span>
@@ -128,7 +128,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-6 py-20 relative w-full">
           <div className="fade-up relative z-10 max-w-lg">
             <span className="inline-block text-xs font-bold uppercase tracking-widest text-orange-600 bg-orange-50 rounded-full px-3.5 py-1.5 mb-4">
-              Established in 2022
+              Established in 2021
             </span>
             <h1 className="text-6xl lg:text-7xl font-extrabold text-navy-900 leading-[1.05] mb-6">
               Moving made <span className="text-orange-500">simple.</span>
