@@ -103,7 +103,7 @@ export default function PricingPage() {
         <p className="text-gray-500 mb-8">No obligation, no hidden fees — just an honest, written quote.</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link href="/quote"><Button size="lg">Get a Free Quote <ArrowRight className="w-4 h-4 ml-2" /></Button></Link>
-          <a href="tel:+27110000000"><Button size="lg" variant="secondary"><PhoneCall className="w-4 h-4 mr-2" /> Call +27 11 000 0000</Button></a>
+          <a href="tel:+27813756494"><Button size="lg" variant="secondary"><PhoneCall className="w-4 h-4 mr-2" /> Call 081 375 6494</Button></a>
         </div>
       </section>
     </div>

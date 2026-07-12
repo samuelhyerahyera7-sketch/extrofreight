@@ -46,8 +46,8 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-white mb-4">Get in touch</h3>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 shrink-0" /> 14 Depot Road, Johannesburg, South Africa</li>
-              <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" /> +27 11 000 0000</li>
-              <li className="flex items-center gap-2"><Mail className="w-4 h-4 shrink-0" /> hello@extrofreight.com</li>
+              <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" /> 081 375 6494</li>
+              <li className="flex items-center gap-2"><Mail className="w-4 h-4 shrink-0" /> admin@extrofreight.co.za</li>
             </ul>
           </div>
         </div>

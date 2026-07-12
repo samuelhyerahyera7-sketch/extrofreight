@@ -22,14 +22,14 @@ export default function ContactPage() {
               <PhoneCall className="w-6 h-6 text-orange-500 shrink-0" />
               <div>
                 <p className="text-sm font-semibold text-navy-900">Phone</p>
-                <a href="tel:+27110000000" className="text-sm text-gray-500">+27 11 000 0000</a>
+                <a href="tel:+27813756494" className="text-sm text-gray-500">081 375 6494</a>
               </div>
             </Card>
             <Card className="p-5 flex items-center gap-4">
               <Mail className="w-6 h-6 text-orange-500 shrink-0" />
               <div>
                 <p className="text-sm font-semibold text-navy-900">Email</p>
-                <a href="mailto:hello@extrofreight.com" className="text-sm text-gray-500">hello@extrofreight.com</a>
+                <a href="mailto:admin@extrofreight.co.za" className="text-sm text-gray-500">admin@extrofreight.co.za</a>
               </div>
             </Card>
             <Card className="p-5 flex items-center gap-4">

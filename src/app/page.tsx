@@ -309,9 +309,9 @@ export default function HomePage() {
                   Get a Free Quote
                 </Button>
               </Link>
-              <a href="tel:+27110000000">
+              <a href="tel:+27813756494">
                 <Button size="lg" variant="outline" className="w-full sm:w-auto border-white/50">
-                  <PhoneCall className="w-4 h-4 mr-2" /> Call +27 11 000 0000
+                  <PhoneCall className="w-4 h-4 mr-2" /> Call 081 375 6494
                 </Button>
               </a>
             </div>

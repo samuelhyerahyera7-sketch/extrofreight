@@ -73,7 +73,7 @@ export default function HomeMovingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link href="/quote"><Button size="lg">Get My Moving Quote <ArrowRight className="w-4 h-4 ml-2" /></Button></Link>
-            <a href="tel:+27110000000"><Button size="lg" variant="outline"><PhoneCall className="w-4 h-4 mr-2" /> Speak to a Move Coordinator</Button></a>
+            <a href="tel:+27813756494"><Button size="lg" variant="outline"><PhoneCall className="w-4 h-4 mr-2" /> Speak to a Move Coordinator</Button></a>
           </div>
         </div>
       </section>

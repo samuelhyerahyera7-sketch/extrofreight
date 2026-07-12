@@ -240,7 +240,7 @@ export default function QuoteForm() {
 
   const itemSummary = Object.entries(form.itemQty)
     .filter(([, qty]) => qty > 0)
-    .map(([item, qty]) => `${qty} x ${item}`)
+    .map(([key, qty]) => `${qty} x ${key.split('::')[1]}`)
 
   const boxSummary = Object.entries(form.boxQty)
     .filter(([, qty]) => qty > 0)
@@ -421,6 +421,17 @@ export default function QuoteForm() {
             </div>
           )}
 
+          {itemSummary.length > 0 && (
+            <div className="mb-6">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Selected</p>
+              <div className="flex flex-wrap gap-x-3 gap-y-1.5">
+                {itemSummary.map(s => (
+                  <span key={s} className="text-sm font-semibold text-orange-600">{s}</span>
+                ))}
+              </div>
+            </div>
+          )}
+
           <label className="text-sm font-medium text-navy-900 mb-1.5 block">
             {form.moveType === 'freight' ? 'Cargo description' : 'Anything else moving that\'s not listed?'}
           </label>
@@ -474,6 +485,18 @@ export default function QuoteForm() {
               )
             })}
           </div>
+
+          {boxSummary.length > 0 && (
+            <div className="mb-4">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Selected</p>
+              <div className="flex flex-wrap gap-x-3 gap-y-1.5">
+                {boxSummary.map(s => (
+                  <span key={s} className="text-sm font-semibold text-orange-600">{s}</span>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="flex items-center justify-between rounded-xl bg-navy-900 px-5 py-4">
             <span className="text-sm font-semibold text-white">Estimated total</span>
             <span className="text-lg font-extrabold text-white">R{boxTotal}</span>
