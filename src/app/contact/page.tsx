@@ -36,7 +36,7 @@ export default function ContactPage() {
               <MapPin className="w-6 h-6 text-orange-500 shrink-0" />
               <div>
                 <p className="text-sm font-semibold text-navy-900">Head office</p>
-                <p className="text-sm text-gray-500">14 Depot Road, Johannesburg, South Africa</p>
+                <p className="text-sm text-gray-500">155 West Street, Sandton, South Africa</p>
               </div>
             </Card>
             <Card className="p-5 flex items-center gap-4">
