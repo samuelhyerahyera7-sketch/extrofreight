@@ -305,6 +305,9 @@ export default function QuoteForm() {
       </datalist>
 
       {/* Stepper */}
+      <p className="sm:hidden text-center text-xs font-semibold text-orange-600 uppercase tracking-wide mb-3">
+        Step {step + 1} of {steps.length}: {steps[step]?.label}
+      </p>
       <div className="flex items-center mb-10">
         {steps.map((s, i) => (
           <div key={s.key} className="flex items-center flex-1 last:flex-none">
