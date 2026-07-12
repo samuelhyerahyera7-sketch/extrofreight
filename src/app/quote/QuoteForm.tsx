@@ -171,6 +171,8 @@ function formatAddress(a: MoveAddress) {
 export default function QuoteForm() {
   const [step, setStep] = useState(0)
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState(false)
   const [form, setForm] = useState(emptyForm)
   const [openRooms, setOpenRooms] = useState<Record<string, boolean>>({ Lounge: true, Workstations: true })
 
@@ -234,10 +236,6 @@ export default function QuoteForm() {
   function back() {
     if (step > 0) setStep(step - 1)
   }
-  function handleSubmit() {
-    setSubmitted(true)
-  }
-
   const itemSummary = Object.entries(form.itemQty)
     .filter(([, qty]) => qty > 0)
     .map(([key, qty]) => `${qty} x ${key.split('::')[1]}`)
@@ -245,6 +243,40 @@ export default function QuoteForm() {
   const boxSummary = Object.entries(form.boxQty)
     .filter(([, qty]) => qty > 0)
     .map(([name, qty]) => `${qty} x ${name}`)
+
+  async function handleSubmit() {
+    setSubmitting(true)
+    setSubmitError(false)
+    try {
+      const res = await fetch('/api/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          moveType: form.moveType,
+          isBoxShop,
+          size: form.size,
+          itemSummary,
+          itemsOther: form.itemsOther,
+          boxSummary,
+          boxTotal: isBoxShop ? boxTotal : undefined,
+          fromAddress: !isBoxShop ? formatAddress(form.from) : undefined,
+          toAddress: formatAddress(form.to),
+          dateMode: form.dateMode,
+          date: form.date,
+          notes: form.notes,
+          name: form.name,
+          phone: form.phone,
+          email: form.email,
+        }),
+      })
+      if (!res.ok) throw new Error('Request failed')
+      setSubmitted(true)
+    } catch {
+      setSubmitError(true)
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   if (submitted) {
     return (
@@ -696,11 +728,17 @@ export default function QuoteForm() {
             Next <ChevronRight className="w-4 h-4 ml-1" />
           </Button>
         ) : (
-          <Button type="button" onClick={handleSubmit}>
-            {isBoxShop ? 'Place Order' : 'Get My Free Quote'}
+          <Button type="button" onClick={handleSubmit} disabled={submitting}>
+            {submitting ? 'Sending…' : (isBoxShop ? 'Place Order' : 'Get My Free Quote')}
           </Button>
         )}
       </div>
+      {submitError && (
+        <p className="text-sm text-red-600 text-center mt-4">
+          Something went wrong sending your request. Please try again, or call us on{' '}
+          <a href="tel:+27813756494" className="underline">081 375 6494</a>.
+        </p>
+      )}
       <p className="text-xs text-gray-400 text-center mt-4">No obligation. We&apos;ll respond within one business day.</p>
     </div>
   )
