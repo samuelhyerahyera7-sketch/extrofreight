@@ -40,13 +40,17 @@ export async function POST(req: Request) {
   `
 
   try {
-    await resend.emails.send({
-      from: 'Extrofreight Website <onboarding@resend.dev>',
+    const { error } = await resend.emails.send({
+      from: process.env.RESEND_FROM_EMAIL || 'Extrofreight Website <onboarding@resend.dev>',
       to: TO_EMAIL,
       replyTo: email,
       subject: `${isBoxShop ? 'Box Shop order' : 'Quote request'} from ${name}`,
       html,
     })
+    if (error) {
+      console.error('Resend rejected quote email', error)
+      return NextResponse.json({ ok: false }, { status: 502 })
+    }
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('Failed to send quote email', err)
