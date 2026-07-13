@@ -2,6 +2,12 @@ import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
 const TO_EMAIL = 'admin@extrofreight.co.za'
+const SITE_URL = 'https://www.extrofreight.co.za'
+const LOGO_HEADER = `
+  <div style="padding:20px 0;text-align:left">
+    <img src="${SITE_URL}/images/logo-wordmark.png" alt="Extrofreight" height="28" style="height:28px;width:auto;display:inline-block" />
+  </div>
+`
 
 function esc(s: string) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -34,12 +40,14 @@ export async function POST(req: Request) {
   rows.push(row('Email', email))
 
   const html = `
+    ${LOGO_HEADER}
     <h2>${isBoxShop ? 'New Box Shop order' : 'New quote request'} — Extrofreight</h2>
     <table cellpadding="0" cellspacing="0" style="border-collapse:collapse">${rows.join('')}</table>
   `
 
   const firstName = (name || '').split(' ')[0] || 'there'
   const customerHtml = `
+    ${LOGO_HEADER}
     <h2>Thanks, ${esc(firstName)} — we've got your ${isBoxShop ? 'order' : 'quote'} request</h2>
     <p>A move coordinator will be in touch within one business day${isBoxShop ? ' to confirm stock and delivery cost' : ' with a written quote'}.</p>
     <p>Here's a copy of what you sent us:</p>

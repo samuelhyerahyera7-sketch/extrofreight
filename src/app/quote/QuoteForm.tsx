@@ -74,6 +74,12 @@ const ROOM_CATALOG: Partial<Record<MoveType, { room: string; items: string[] }[]
       room: 'Boxes',
       items: ['Small Boxes', 'Medium Boxes', 'Large Boxes', 'Wardrobe Boxes'],
     },
+    {
+      room: 'Packing Materials',
+      items: [
+        'Bubble Wrap', 'Packing Tape', 'Furniture Blankets', 'Mattress Bags', 'Packing Paper',
+      ],
+    },
   ],
   office: [
     {
@@ -91,6 +97,12 @@ const ROOM_CATALOG: Partial<Record<MoveType, { room: string; items: string[] }[]
     {
       room: 'Boxes',
       items: ['Small Boxes', 'Medium Boxes', 'Large Boxes'],
+    },
+    {
+      room: 'Packing Materials',
+      items: [
+        'Bubble Wrap', 'Packing Tape', 'Furniture Blankets', 'Packing Paper',
+      ],
     },
   ],
 }
@@ -127,7 +139,7 @@ const SA_CITIES = [
 type MoveDateMode = 'fixed' | 'flexible'
 type StepKey = 'moveType' | 'size' | 'items' | 'shop' | 'details' | 'contact' | 'review'
 
-const emptyAddress = { street: '', suburb: '', city: '', province: '' }
+const emptyAddress = { street: '', suburb: '', city: '', province: '', postalCode: '' }
 type MoveAddress = typeof emptyAddress
 
 const BASE_STEPS: { key: StepKey; label: string }[] = [
@@ -164,7 +176,7 @@ const emptyForm = {
 }
 
 function formatAddress(a: MoveAddress) {
-  const parts = [a.street, a.suburb, a.city, a.province].filter(Boolean)
+  const parts = [a.street, a.suburb, a.city, a.province, a.postalCode].filter(Boolean)
   return parts.length ? parts.join(', ') : '—'
 }
 
@@ -571,10 +583,17 @@ export default function QuoteForm() {
                       placeholder="City / Town"
                     />
                   </div>
-                  <Select value={form.from.province} onChange={e => updateAddress('from', 'province', e.target.value)}>
-                    <option value="">Province...</option>
-                    {SA_PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
-                  </Select>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <Select value={form.from.province} onChange={e => updateAddress('from', 'province', e.target.value)}>
+                      <option value="">Province...</option>
+                      {SA_PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
+                    </Select>
+                    <Input
+                      value={form.from.postalCode}
+                      onChange={e => updateAddress('from', 'postalCode', e.target.value)}
+                      placeholder="Postal code"
+                    />
+                  </div>
                 </div>
               </div>
             )}
@@ -600,10 +619,17 @@ export default function QuoteForm() {
                     placeholder="City / Town"
                   />
                 </div>
-                <Select value={form.to.province} onChange={e => updateAddress('to', 'province', e.target.value)}>
-                  <option value="">Province...</option>
-                  {SA_PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
-                </Select>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <Select value={form.to.province} onChange={e => updateAddress('to', 'province', e.target.value)}>
+                    <option value="">Province...</option>
+                    {SA_PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
+                  </Select>
+                  <Input
+                    value={form.to.postalCode}
+                    onChange={e => updateAddress('to', 'postalCode', e.target.value)}
+                    placeholder="Postal code"
+                  />
+                </div>
               </div>
             </div>
 
