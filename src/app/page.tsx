@@ -46,7 +46,7 @@ const SERVICES = [
 ]
 
 const MOVING_STEPS = [
-  { Icon: PhoneCall, title: 'Free survey & quote', desc: 'Tell us about your move — in person, on video, or online — and get a transparent, written quote.' },
+  { Icon: PhoneCall, title: 'Free survey & quote', desc: 'Tell us about your move — on video or online — and get a transparent, written quote.' },
   { Icon: ClipboardList, title: 'Plan & pack', desc: 'We schedule your date and pack your belongings with the right materials for every item.' },
   { Icon: Truck, title: 'Move day', desc: 'Our trained crews load, transport and deliver on time, with live updates along the way.' },
   { Icon: PackageCheck, title: 'Unpack & settle', desc: 'We unpack, assemble furniture, and clear away the boxes so you can just move in.' },

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { Truck, Building2, Warehouse, PackageSearch, ArrowRight, Check, Globe2, ThermometerSnowflake } from 'lucide-react'
+import { Truck, Building2, Warehouse, PackageSearch, ArrowRight, Check, Globe2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 
@@ -68,7 +68,7 @@ export default function ServicesPage() {
               furniture and sensitive documents with dedicated project management.
             </p>
             <ul className="space-y-3">
-              {['Dedicated relocation project manager', 'IT & equipment de/re-installation', 'After-hours & weekend scheduling', 'Secure document & asset chain-of-custody'].map(f => (
+              {['Dedicated relocation project manager', 'After-hours & weekend scheduling', 'Secure document & asset chain-of-custody'].map(f => (
                 <li key={f} className="flex items-start gap-2.5 text-sm text-gray-700">
                   <Check className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" /> {f}
                 </li>
@@ -89,7 +89,7 @@ export default function ServicesPage() {
             short-term bridging storage or long-term contracts.
           </p>
           <ul className="space-y-3">
-            {['24/7 monitored facilities', 'Short & long-term contracts', 'Inventory management on request', 'Direct freight-to-storage handoff'].map(f => (
+            {['24/7 monitored facilities', 'Inventory management on request', 'Direct freight-to-storage handoff'].map(f => (
               <li key={f} className="flex items-start gap-2.5 text-sm text-gray-700">
                 <Check className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" /> {f}
               </li>
@@ -97,9 +97,9 @@ export default function ServicesPage() {
           </ul>
         </div>
         <Card className="p-8 bg-gray-50">
-          <ThermometerSnowflake className="w-10 h-10 text-orange-500 mb-4" />
-          <p className="text-2xl font-extrabold text-navy-900 mb-1">Climate-aware storage</p>
-          <p className="text-sm text-gray-500">Available for sensitive goods, electronics and furniture.</p>
+          <Warehouse className="w-10 h-10 text-orange-500 mb-4" />
+          <p className="text-2xl font-extrabold text-navy-900 mb-1">Secure facilities</p>
+          <p className="text-sm text-gray-500">24/7 monitored warehousing for business inventory and household goods in transit.</p>
         </Card>
       </section>
 

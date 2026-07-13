@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import {
-  ArrowRight, PhoneCall, ClipboardList, Video, Truck, FileText,
+  ArrowRight, PhoneCall, ClipboardList, Video, FileText,
   Ruler, MapPin, Calendar, Boxes, ShieldCheck,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -20,13 +20,8 @@ const QUOTE_WAYS = [
   },
   {
     Icon: Video,
-    title: 'Free home survey',
-    desc: 'Book an in-person or video walkthrough with a move coordinator for an accurate, no-obligation quote on bigger moves.',
-  },
-  {
-    Icon: Truck,
-    title: 'Depot-to-depot',
-    desc: 'Pack it yourself and drop it at our depot, or let us collect — a lower-cost option for flexible moving dates.',
+    title: 'Video survey',
+    desc: 'Book a video walkthrough with a move coordinator for an accurate, no-obligation quote on bigger moves.',
   },
   {
     Icon: PhoneCall,

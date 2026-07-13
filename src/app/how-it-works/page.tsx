@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 const STEPS = [
-  { Icon: PhoneCall, title: 'Free survey & quote', desc: 'Tell us about your move or shipment — in person, on video, or online — and get a transparent, written quote within one business day.' },
+  { Icon: PhoneCall, title: 'Free survey & quote', desc: 'Tell us about your move or shipment — on video or online — and get a transparent, written quote within one business day.' },
   { Icon: ClipboardList, title: 'Plan & pack', desc: 'We schedule your date and, for home moves, pack your belongings with the right materials for every item.' },
   { Icon: Truck, title: 'Move / transit day', desc: 'Our trained crews load, transport and deliver on time, with live tracking and updates along the way.' },
   { Icon: PackageCheck, title: 'Unpack & settle', desc: 'For moves, we unpack, assemble furniture, and clear away the boxes. For freight, we confirm proof of delivery.' },
