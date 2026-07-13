@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 const TO_EMAIL = 'admin@extrofreight.co.za'
 
 function esc(s: string) {
@@ -40,6 +39,7 @@ export async function POST(req: Request) {
   `
 
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY)
     const { error } = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'Extrofreight Website <onboarding@resend.dev>',
       to: TO_EMAIL,
