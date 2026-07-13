@@ -78,7 +78,8 @@ const ROOM_CATALOG: Partial<Record<MoveType, { room: string; items: string[] }[]
     {
       room: 'Packing Materials',
       items: [
-        'Bubble Wrap', 'Packing Tape', 'Furniture Blankets', 'Mattress Bags', 'Packing Paper',
+        'Bubble Wrap (10m Roll)', 'Packing Tape (Roll)', 'Furniture Blanket (Each)',
+        'Mattress Bag (Each)', 'Packing Paper (Bundle)',
       ],
     },
   ],
@@ -102,7 +103,7 @@ const ROOM_CATALOG: Partial<Record<MoveType, { room: string; items: string[] }[]
     {
       room: 'Packing Materials',
       items: [
-        'Bubble Wrap', 'Packing Tape', 'Furniture Blankets', 'Packing Paper',
+        'Bubble Wrap (10m Roll)', 'Packing Tape (Roll)', 'Furniture Blanket (Each)', 'Packing Paper (Bundle)',
       ],
     },
   ],
