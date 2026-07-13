@@ -49,11 +49,11 @@ export async function POST(req: Request) {
     })
     if (error) {
       console.error('Resend rejected quote email', error)
-      return NextResponse.json({ ok: false }, { status: 502 })
+      return NextResponse.json({ ok: false, debug: error }, { status: 502 })
     }
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('Failed to send quote email', err)
-    return NextResponse.json({ ok: false }, { status: 500 })
+    return NextResponse.json({ ok: false, debug: err instanceof Error ? err.message : String(err) }, { status: 500 })
   }
 }
