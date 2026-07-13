@@ -41,7 +41,7 @@ export async function POST(req: Request) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const { error } = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'Extrofreight Website <onboarding@resend.dev>',
+      from: 'Extrofreight Website <quotes@extrofreight.co.za>',
       to: TO_EMAIL,
       replyTo: email,
       subject: `${isBoxShop ? 'Box Shop order' : 'Quote request'} from ${name}`,
@@ -49,11 +49,11 @@ export async function POST(req: Request) {
     })
     if (error) {
       console.error('Resend rejected quote email', error)
-      return NextResponse.json({ ok: false, debug: error }, { status: 502 })
+      return NextResponse.json({ ok: false }, { status: 502 })
     }
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('Failed to send quote email', err)
-    return NextResponse.json({ ok: false, debug: err instanceof Error ? err.message : String(err) }, { status: 500 })
+    return NextResponse.json({ ok: false }, { status: 500 })
   }
 }
