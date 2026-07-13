@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 
 export const metadata: Metadata = {
-  title: 'Freight & Logistics Services | Extrofreight',
-  description: 'Shared-load and dedicated-truck freight, office relocation, warehousing, storage and shipment tracking — nationwide logistics from Extrofreight.',
+  title: 'Freight & Logistics Services',
+  description: 'Shared-load and dedicated-truck freight, office relocation, warehousing, storage and shipment tracking — nationwide logistics across South Africa.',
 }
 
 export default function ServicesPage() {

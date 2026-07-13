@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 
 export const metadata: Metadata = {
-  title: 'Get a Quote | Extrofreight',
+  title: 'Quote Options',
   description: 'No fixed price lists — every move or shipment is quoted individually based on your needs. See the ways you can get a free Extrofreight quote.',
 }
 

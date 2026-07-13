@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import TrackForm from './TrackForm'
 
 export const metadata: Metadata = {
-  title: 'Track a Shipment | Extrofreight',
-  description: 'Track your home move or freight shipment with Extrofreight.',
+  title: 'Track a Shipment',
+  description: 'Track your home move or freight shipment with Extrofreight in real time.',
 }
 
 export default function TrackPage() {

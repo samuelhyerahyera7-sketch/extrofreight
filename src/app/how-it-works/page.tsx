@@ -4,8 +4,8 @@ import { PhoneCall, ClipboardList, Truck, PackageCheck, ArrowRight } from 'lucid
 import { Button } from '@/components/ui/button'
 
 export const metadata: Metadata = {
-  title: 'How It Works | Extrofreight',
-  description: 'How an Extrofreight home move or freight shipment works, from quote to delivery.',
+  title: 'How It Works',
+  description: 'How an Extrofreight home move, office relocation or freight shipment works, from your free quote to final delivery.',
 }
 
 const STEPS = [

@@ -4,8 +4,8 @@ import { Card } from '@/components/ui/card'
 import QuoteForm from './QuoteForm'
 
 export const metadata: Metadata = {
-  title: 'Get a Free Quote | Extrofreight',
-  description: 'Request a free, no-obligation quote for home moving, office relocation, freight or warehousing.',
+  title: 'Get a Free Quote',
+  description: 'Request a free, no-obligation quote for home moving, office relocation, freight or packing services anywhere in South Africa.',
 }
 
 export default function QuotePage() {

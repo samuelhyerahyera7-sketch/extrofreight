@@ -4,8 +4,8 @@ import { Card } from '@/components/ui/card'
 import ContactForm from './ContactForm'
 
 export const metadata: Metadata = {
-  title: 'Contact Us | Extrofreight',
-  description: 'Get in touch with Extrofreight for home moving, freight and logistics enquiries.',
+  title: 'Contact Us',
+  description: 'Get in touch with Extrofreight for home moving, office relocation, freight and logistics enquiries in Sandton, Johannesburg and nationwide.',
 }
 
 export default function ContactPage() {

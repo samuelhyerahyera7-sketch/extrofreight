@@ -9,8 +9,8 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
 export const metadata: Metadata = {
-  title: 'Home Moving Services | Extrofreight',
-  description: 'Full-service home moving — local & long-distance, packing, storage and office relocation. Written quotes, insured crews, on-time delivery.',
+  title: 'Home Moving Services',
+  description: 'Full-service home moving across South Africa — local & long-distance removals, packing and storage. Written quotes, insured crews, on-time delivery.',
 }
 
 const MOVE_TYPES = [

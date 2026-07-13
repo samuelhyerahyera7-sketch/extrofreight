@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
 export const metadata: Metadata = {
-  title: 'About Us | Extrofreight',
-  description: 'Extrofreight started as a freight carrier and grew into a full logistics and home moving company trusted nationwide.',
+  title: 'About Us',
+  description: 'Extrofreight started as a freight carrier in 2021 and grew into a full logistics and home moving company trusted across South Africa.',
 }
 
 const VALUES = [
