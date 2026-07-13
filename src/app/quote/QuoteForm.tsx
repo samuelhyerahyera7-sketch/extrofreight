@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   Home as HomeIcon, Building2, Package, Truck, Check, ChevronLeft, ChevronRight, ChevronDown,
-  CheckCircle2, MapPin, Calendar, User, Minus, Plus, ShoppingCart,
+  MapPin, Calendar, User, Minus, Plus, ShoppingCart,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -181,8 +182,8 @@ function formatAddress(a: MoveAddress) {
 }
 
 export default function QuoteForm() {
+  const router = useRouter()
   const [step, setStep] = useState(0)
-  const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(false)
   const [form, setForm] = useState(emptyForm)
@@ -282,30 +283,13 @@ export default function QuoteForm() {
         }),
       })
       if (!res.ok) throw new Error('Request failed')
-      setSubmitted(true)
+      const params = new URLSearchParams({ type: isBoxShop ? 'boxShop' : 'quote', name: form.name })
+      router.push(`/thank-you?${params.toString()}`)
     } catch {
       setSubmitError(true)
     } finally {
       setSubmitting(false)
     }
-  }
-
-  if (submitted) {
-    return (
-      <div className="text-center py-10">
-        <CheckCircle2 className="w-14 h-14 text-orange-500 mx-auto mb-4" />
-        <h3 className="text-xl font-bold text-navy-900 mb-2">
-          {isBoxShop ? 'Order request received' : 'Quote request received'}
-        </h3>
-        <p className="text-gray-500 text-sm max-w-sm mx-auto">
-          {isBoxShop ? (
-            <>Thanks, {form.name.split(' ')[0] || 'there'} — we'll confirm stock and delivery cost, then get your boxes and packing supplies out to you.</>
-          ) : (
-            <>Thanks, {form.name.split(' ')[0] || 'there'} — a move coordinator will get back to you within one business day with a written quote for your {form.moveType} move.</>
-          )}
-        </p>
-      </div>
-    )
   }
 
   const rooms = form.moveType && form.moveType !== 'boxShop' && form.moveType !== 'freight' ? ROOM_CATALOG[form.moveType] : undefined
