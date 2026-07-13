@@ -38,6 +38,16 @@ export async function POST(req: Request) {
     <table cellpadding="0" cellspacing="0" style="border-collapse:collapse">${rows.join('')}</table>
   `
 
+  const firstName = (name || '').split(' ')[0] || 'there'
+  const customerHtml = `
+    <h2>Thanks, ${esc(firstName)} — we've got your ${isBoxShop ? 'order' : 'quote'} request</h2>
+    <p>A move coordinator will be in touch within one business day${isBoxShop ? ' to confirm stock and delivery cost' : ' with a written quote'}.</p>
+    <p>Here's a copy of what you sent us:</p>
+    <table cellpadding="0" cellspacing="0" style="border-collapse:collapse">${rows.join('')}</table>
+    <p style="margin-top:16px">Need to reach us sooner? Call <a href="tel:+27813756494">081 375 6494</a> or reply to this email.</p>
+    <p>— The Extrofreight team</p>
+  `
+
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const { error } = await resend.emails.send({
@@ -51,6 +61,20 @@ export async function POST(req: Request) {
       console.error('Resend rejected quote email', error)
       return NextResponse.json({ ok: false }, { status: 502 })
     }
+
+    if (email) {
+      const { error: customerError } = await resend.emails.send({
+        from: 'Extrofreight <quotes@extrofreight.co.za>',
+        to: email,
+        replyTo: TO_EMAIL,
+        subject: `We've received your ${isBoxShop ? 'order' : 'quote'} request — Extrofreight`,
+        html: customerHtml,
+      })
+      if (customerError) {
+        console.error('Failed to send customer confirmation email', customerError)
+      }
+    }
+
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('Failed to send quote email', err)
